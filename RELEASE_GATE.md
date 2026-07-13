@@ -17,6 +17,9 @@ source or license policy violations, stale notices, missing release assets, malf
 CycloneDX SBOMs, source-package contents, or discovered secrets. CI also builds on Linux,
 macOS, Windows, and the declared MSRV (Rust 1.88.0).
 
+Regenerate the committed, all-target, path-normalized SBOMs with
+`./scripts/generate-sboms.sh` after changing `Cargo.lock` or package metadata.
+
 The Cargo members are intentionally `publish = false`; therefore registry publish dry-runs
 are not applicable. Run `./scripts/sync-package-assets.sh --write` after changing a required
 distribution document. The release gate runs the script in check mode, inspects the exact file

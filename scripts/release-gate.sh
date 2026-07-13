@@ -41,13 +41,9 @@ cargo deny check advisories bans licenses sources
 notice_tmp="$(mktemp)"
 package_tmp="$(mktemp -d)"
 sbom_tmp="$(mktemp -d)"
-generated_sboms=()
 cleanup() {
   rm -f "${notice_tmp}"
   rm -rf "${package_tmp}" "${sbom_tmp}"
-  if ((${#generated_sboms[@]})); then
-    rm -f "${generated_sboms[@]}"
-  fi
 }
 trap cleanup EXIT
 
@@ -93,20 +89,13 @@ for package in hanimo-core hanimo-find; do
   done
 done
 
-SOURCE_DATE_EPOCH=0 cargo cyclonedx \
-  --format json \
-  --spec-version 1.5 \
-  --all-features \
-  --override-filename release-gate.cdx
+./scripts/generate-sboms.sh "${sbom_tmp}/generated"
 for package in hanimo-core hanimo-find; do
-  generated="crates/${package}/release-gate.cdx.json"
+  generated="${sbom_tmp}/generated/${package}.cdx.json"
   committed="sbom/${package}.cdx.json"
-  generated_sboms+=("${generated}")
   jq -e '.bomFormat == "CycloneDX" and .specVersion == "1.5" and (.components | length > 0)' "${generated}" >/dev/null
-  jq -S 'del(.serialNumber, .metadata.timestamp)' "${generated}" >"${sbom_tmp}/${package}.generated.json"
-  jq -S 'del(.serialNumber, .metadata.timestamp)' "${committed}" >"${sbom_tmp}/${package}.committed.json"
-  if ! cmp -s "${sbom_tmp}/${package}.generated.json" "${sbom_tmp}/${package}.committed.json"; then
-    echo "release gate: ${committed} is stale; regenerate it with cargo-cyclonedx" >&2
+  if ! cmp -s "${generated}" "${committed}"; then
+    echo "release gate: ${committed} is stale; regenerate it with scripts/generate-sboms.sh" >&2
     exit 1
   fi
 done
