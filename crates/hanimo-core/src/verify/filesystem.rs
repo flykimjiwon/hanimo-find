@@ -1,5 +1,4 @@
 use std::{
-    ffi::OsString,
     io::{self, Read as _},
     path::{Component, Path, PathBuf},
 };
@@ -89,6 +88,7 @@ pub(super) fn read_nofollow(root: &Dir, relative: &Path, maximum: usize) -> io::
 
 #[cfg(unix)]
 fn platform_path(raw: &[u8]) -> PathBuf {
+    use std::ffi::OsString;
     use std::os::unix::ffi::OsStringExt as _;
 
     PathBuf::from(OsString::from_vec(raw.to_vec()))
