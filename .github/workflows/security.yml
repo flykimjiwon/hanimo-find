@@ -1,0 +1,61 @@
+name: Supply chain
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+  schedule:
+    - cron: "17 3 * * 1"
+
+permissions:
+  contents: read
+
+concurrency:
+  group: supply-chain-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  CARGO_TERM_COLOR: always
+  CARGO_DENY_VERSION: "0.20.2"
+  CARGO_ABOUT_VERSION: "0.9.1"
+  CARGO_CYCLONEDX_VERSION: "0.5.9"
+  GITLEAKS_VERSION: "8.30.1"
+
+jobs:
+  release-gates:
+    name: Security, licenses, packages, and SBOM
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out source
+        uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
+      - name: Install stable Rust
+        run: |
+          rustup toolchain install stable --profile minimal --component rustfmt,clippy
+          rustup override set stable
+      - name: Install pinned Rust supply-chain tools
+        run: |
+          cargo install --locked cargo-deny --version "${CARGO_DENY_VERSION}"
+          cargo install --locked cargo-about --version "${CARGO_ABOUT_VERSION}" --features cli
+          cargo install --locked cargo-cyclonedx --version "${CARGO_CYCLONEDX_VERSION}"
+      - name: Install checksum-verified Gitleaks
+        shell: bash
+        run: |
+          set -euo pipefail
+          asset="gitleaks_${GITLEAKS_VERSION}_linux_x64.tar.gz"
+          base="https://github.com/gitleaks/gitleaks/releases/download/v${GITLEAKS_VERSION}"
+          curl --fail --location --silent --show-error --output "${RUNNER_TEMP}/${asset}" "${base}/${asset}"
+          curl --fail --location --silent --show-error --output "${RUNNER_TEMP}/checksums.txt" "${base}/gitleaks_${GITLEAKS_VERSION}_checksums.txt"
+          (cd "${RUNNER_TEMP}" && grep " ${asset}$" checksums.txt | sha256sum --check --strict)
+          tar -xzf "${RUNNER_TEMP}/${asset}" -C "${RUNNER_TEMP}" gitleaks
+          sudo install -m 0755 "${RUNNER_TEMP}/gitleaks" /usr/local/bin/gitleaks
+          gitleaks version
+      - name: Run fail-closed release gate
+        run: ./scripts/release-gate.sh
+      - name: Upload CycloneDX SBOMs
+        if: always()
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: cyclonedx-sbom
+          path: sbom/*.cdx.json
+          if-no-files-found: error
+          retention-days: 30

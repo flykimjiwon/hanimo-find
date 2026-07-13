@@ -1,0 +1,49 @@
+{
+  "schema_version": "0.1.0",
+  "cases": [
+    {
+      "id": "malformed-json",
+      "input_representation": "utf8",
+      "input": "{\"schema_version\":\"0.1.0\",}",
+      "expected_exit": 3,
+      "expected_reason": "invalid_bundle"
+    },
+    {
+      "id": "path-traversal",
+      "input_representation": "utf8",
+      "path": "../outside/secret.txt",
+      "expected_exit": 5,
+      "expected_reason": "scan_security_io",
+      "must_not_open": true
+    },
+    {
+      "id": "stale-source",
+      "fixture": "fixtures/security/repo/stale.txt",
+      "claimed_source_sha256": "0000000000000000000000000000000000000000000000000000000000000000",
+      "expected_exit": 4,
+      "expected_reason": "stale_or_forged"
+    },
+    {
+      "id": "invalid-utf8-source",
+      "fixture_case": "invalid-utf8",
+      "input_representation": "base64",
+      "source_base64": "dmFsaWQK/4AKdGFpbAo=",
+      "expected_output_representation": "base64",
+      "expected_exit": 0,
+      "must_not_contain_replacement_character": true
+    },
+    {
+      "id": "critic-rejection",
+      "fixture": "conformance/evidence-bundle.rejected.json",
+      "expected_exit": 1,
+      "expected_reason": "no_evidence_or_critic_reject"
+    },
+    {
+      "id": "accepted-budget-gap",
+      "fixture": "conformance/evidence-bundle.budget-rejected.json",
+      "mutation": "set critic.verdict to accepted and recompute bundle_sha256",
+      "expected_exit": 4,
+      "expected_reason": "stale_or_forged"
+    }
+  ]
+}

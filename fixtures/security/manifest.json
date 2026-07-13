@@ -1,0 +1,13 @@
+{
+  "schema_version": "0.1.0",
+  "isolated_root": "repo",
+  "cases": [
+    { "id": "public", "path": "public.txt", "kind": "regular", "expected": "scan" },
+    { "id": "hidden", "path": ".hidden/hidden.txt", "kind": "regular", "expected": "skip", "reason": "hidden" },
+    { "id": "secret", "path": "secrets/.env.example", "kind": "regular", "expected": "skip", "reason": "secret" },
+    { "id": "ignored", "path": "private.key", "source_base64": "SUdOT1JFRF9LRVlfU0VOVElORUw=", "kind": "regular", "expected": "skip", "reason": "ignored" },
+    { "id": "symlink-outside", "path": "link-outside", "kind": "symlink", "target": "../outside/secret.txt", "expected": "skip", "reason": "symlink", "materialize_only_in_temporary_fixture_root": true },
+    { "id": "traversal", "path": "../outside/secret.txt", "kind": "request", "expected_exit": 5, "reason": "invalid_path", "must_not_open": true },
+    { "id": "stale", "path": "stale.txt", "kind": "regular", "claimed_source_sha256": "0000000000000000000000000000000000000000000000000000000000000000", "expected_exit": 4, "reason": "stale_or_forged" }
+  ]
+}

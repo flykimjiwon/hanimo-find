@@ -1,0 +1,30 @@
+{
+  "schema_version": "0.1.0",
+  "cases": [
+    {
+      "id": "lf",
+      "virtual_path": "encoding/lf.bin",
+      "source_base64": "YWxwaGEK7ZWc6riACm9tZWdhCg==",
+      "canonical_content_base64": "YWxwaGEK7ZWc6riACm9tZWdh",
+      "line_count": 3,
+      "representation": "utf8"
+    },
+    {
+      "id": "crlf",
+      "virtual_path": "encoding/crlf.bin",
+      "source_base64": "YWxwaGENCu2VnOq4gA0Kb21lZ2ENCg==",
+      "canonical_content_base64": "YWxwaGEK7ZWc6riACm9tZWdh",
+      "line_count": 3,
+      "representation": "utf8"
+    },
+    {
+      "id": "invalid-utf8",
+      "virtual_path_base64": "ZW5jb2RpbmcvaW52YWxpZC3/LmJpbg==",
+      "source_base64": "dmFsaWQK/4AKdGFpbAo=",
+      "canonical_content_base64": "dmFsaWQK/4AKdGFpbA==",
+      "line_count": 3,
+      "representation": "base64",
+      "must_not_contain_replacement_character": true
+    }
+  ]
+}

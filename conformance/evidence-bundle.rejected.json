@@ -1,0 +1,21 @@
+{
+  "schema_version": "0.1.0",
+  "bundle_sha256": "fc5b89c1a56505ff5a2b1e2a464571dd0d77a2f1a51f34d8dda13ee19ebb11f8",
+  "query": "Find \"missing phrase\" MISSING_IDENTIFIER",
+  "root": ".",
+  "budget": {
+    "max_blocks": 8,
+    "context_lines": 3,
+    "max_file_bytes": 1048576,
+    "max_total_bytes": 16777216,
+    "max_matches": 1000
+  },
+  "blocks": [],
+  "skipped": [],
+  "critic": {
+    "verdict": "rejected",
+    "covered_quoted_phrases": [],
+    "covered_identifiers": [],
+    "uncovered": ["missing phrase", "MISSING_IDENTIFIER"]
+  }
+}

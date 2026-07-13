@@ -1,0 +1,76 @@
+{
+  "schema_version": "0.1.0",
+  "raw_bytes": {
+    "line_numbers": "1-based inclusive",
+    "byte_ranges": "0-based half-open",
+    "line_endings": "LF and CRLF terminators excluded; bare CR is content",
+    "canonical_block": "line contents joined by one LF with no final LF",
+    "unicode_normalization": false,
+    "invalid_utf8_representation": "base64"
+  },
+  "block_identity": {
+    "domain": "imnotrag:block:v1\u0000",
+    "frame": "u64be(byte_length) || bytes",
+    "fields": ["path_bytes", "ascii_decimal(line_start)", "ascii_decimal(line_end)", "canonical_content_bytes"],
+    "block_id": "sha256: + lowercase hex SHA-256(preimage)",
+    "source_sha256": "lowercase hex SHA-256(exact complete raw file bytes)",
+    "bundle_domain": "hanimo:evidence-bundle:v1\u0000",
+    "bundle_sha256": "lowercase hex SHA-256(domain plus u64be length-framed immutable payload); integrity only, not a signature"
+  },
+  "scores": {
+    "exact_phrase": 300,
+    "identifier": 250,
+    "all_terms": 150,
+    "heading": 75,
+    "path": 50,
+    "proximity": { "minimum": 0, "maximum": 40 }
+  },
+  "sort": ["score_desc", "raw_root_relative_path_asc", "line_asc", "byte_offset_asc", "block_id_asc"],
+  "critic": {
+    "minimum_blocks": 1,
+    "coverage": ["every_quoted_phrase", "every_identifier"],
+    "accepted_requires_no_budget_gap": true,
+    "verification_recomputes_invariant": true
+  },
+  "defaults": {
+    "max_blocks": 8,
+    "context_lines": 3,
+    "max_file_bytes": 1048576,
+    "max_total_bytes": 16777216,
+    "max_matches": 1000
+  },
+  "search_limits": {
+    "query_utf8_bytes": 4096,
+    "aggregate_literal_utf8_bytes": 4096,
+    "aggregate_literals": 64,
+    "candidate_files": 64,
+    "discovery_entries": 256,
+    "discovery_depth": 64,
+    "discovery_budget_path": ""
+  },
+  "verification_limits": {
+    "bundle_bytes": 16777216,
+    "blocks": 64,
+    "skipped": 65536,
+    "nested_array_items": 4096,
+    "context_lines": 4096,
+    "max_file_bytes": 16777216,
+    "max_total_bytes": 67108864,
+    "max_matches": 1000000,
+    "aggregate_source_read_bytes": 134217728
+  },
+  "exits": {
+    "accepted_verified": 0,
+    "no_evidence_or_critic_reject": 1,
+    "usage": 2,
+    "invalid_bundle": 3,
+    "stale_or_forged": 4,
+    "scan_security_io": 5
+  },
+  "mcp": {
+    "library": "rmcp",
+    "transport": "stdio",
+    "protocol": "JSON-RPC",
+    "stdout": "protocol only"
+  }
+}

@@ -1,0 +1,4 @@
+.hidden/
+secrets/
+*.key
+link-outside

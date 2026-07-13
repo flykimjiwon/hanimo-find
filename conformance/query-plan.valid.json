@@ -1,0 +1,15 @@
+{
+  "schema_version": "0.1.0",
+  "query": "Find \"safe rollout\" FEATURE_FLAG DEPLOY_REGION 배포",
+  "root": ".",
+  "quoted_phrases": ["safe rollout"],
+  "identifiers": ["FEATURE_FLAG", "DEPLOY_REGION"],
+  "terms": ["배포"],
+  "budget": {
+    "max_blocks": 8,
+    "context_lines": 3,
+    "max_file_bytes": 1048576,
+    "max_total_bytes": 16777216,
+    "max_matches": 1000
+  }
+}

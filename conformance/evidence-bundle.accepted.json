@@ -1,0 +1,50 @@
+{
+  "schema_version": "0.1.0",
+  "bundle_sha256": "3600642768008bbbb0c555c4652f4b9086702dd09fa1e762ab33ad3dc1e57580",
+  "query": "Find \"safe rollout\" FEATURE_FLAG DEPLOY_REGION 배포",
+  "root": ".",
+  "budget": {
+    "max_blocks": 8,
+    "context_lines": 3,
+    "max_file_bytes": 1048576,
+    "max_total_bytes": 16777216,
+    "max_matches": 1000
+  },
+  "blocks": [
+    {
+      "path": { "encoding": "utf8", "text": "fixtures/multilingual/config/feature-flags.txt" },
+      "line_start": 1,
+      "line_end": 3,
+      "byte_start": 0,
+      "byte_end": 120,
+      "content": { "encoding": "utf8", "text": "FEATURE_FLAG enables safe rollout.\n기능 플래그는 단계적 배포를 지원합니다.\nDEPLOY_REGION=ap-northeast-2" },
+      "matched_terms": ["safe rollout", "FEATURE_FLAG", "DEPLOY_REGION", "배포"],
+      "score": 780,
+      "score_components": { "exact_phrase": 300, "identifier": 250, "all_terms": 150, "heading": 0, "path": 50, "proximity": 30 },
+      "why": ["exact phrase", "identifier", "all terms", "path match", "proximity"],
+      "block_id": "sha256:f84129bf3ddb191fd4315317a34fcf684121e3915f41c98ce2e59d697fd4e0bd",
+      "source_sha256": "84dda1450952dcb7c8221d843610a4b443b37c8a668eaade0b5c20fadd19bb65"
+    },
+    {
+      "path": { "encoding": "utf8", "text": "fixtures/multilingual/docs/deploy.md" },
+      "line_start": 1,
+      "line_end": 5,
+      "byte_start": 0,
+      "byte_end": 144,
+      "content": { "encoding": "utf8", "text": "# 배포 가이드\n\n서비스를 서울 리전에 배포합니다.\nSet DEPLOY_REGION to ap-northeast-2.\n검증 후 안전하게 배포하세요." },
+      "matched_terms": ["DEPLOY_REGION", "배포"],
+      "score": 565,
+      "score_components": { "exact_phrase": 0, "identifier": 250, "all_terms": 150, "heading": 75, "path": 50, "proximity": 40 },
+      "why": ["identifier", "all terms", "heading", "path match", "proximity"],
+      "block_id": "sha256:97d89bd56bd4754ce2c70ac68ca1eae6a01087c5336e87db247af599c6200596",
+      "source_sha256": "45e400fd53f06ca055dbd6955d96ec7224e61c3c2b4d1bbc98abd82185f66c54"
+    }
+  ],
+  "skipped": [],
+  "critic": {
+    "verdict": "accepted",
+    "covered_quoted_phrases": ["safe rollout"],
+    "covered_identifiers": ["FEATURE_FLAG", "DEPLOY_REGION"],
+    "uncovered": []
+  }
+}

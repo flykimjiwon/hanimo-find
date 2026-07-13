@@ -1,0 +1,8 @@
+from chromadb import Client
+
+vectors = embeddings.create(input=documents)
+chunks = split_text(documents, chunk_size=1000, chunk_overlap=100)
+results = store.similarity_search(query, k=4)
+ranked = reranker.rerank(results)
+citation = {"source": ranked[0].metadata["source"]}
+index.add(chunks)

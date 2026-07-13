@@ -1,0 +1,35 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://hanimo.dev/find/schema/rag-diagnosis/0.1.0",
+  "title": "Hanimo Find RagDiagnosis 0.1.0",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "bundle_sha256", "findings", "summary"],
+  "properties": {
+    "schema_version": { "const": "0.1.0" },
+    "bundle_sha256": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+    "findings": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["severity", "message", "citations"],
+        "properties": {
+          "severity": { "enum": ["info", "warning", "error"] },
+          "message": { "type": "string", "minLength": 1 },
+          "citations": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": ["path", "line"],
+              "properties": { "path": { "type": "string", "minLength": 1 }, "line": { "type": "integer", "minimum": 1 } }
+            }
+          }
+        }
+      }
+    },
+    "summary": { "type": "string" }
+  },
+  "x-hanimo-find-contract": { "schema_version": "0.1.0", "json_authoritative": true, "markdown": "pure render" }
+}

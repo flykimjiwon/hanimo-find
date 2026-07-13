@@ -1,0 +1,15 @@
+{
+  "schema_version": "0.1.0",
+  "bundle_sha256": "de22f4058f907721182ba00d5f46da89c9a8d9ce79bfe44afbdacc5f23e3ad9b",
+  "findings": [
+    {
+      "severity": "info",
+      "message": "The selected evidence covers the requested deployment identifier.",
+      "citations": [
+        { "path": "fixtures/multilingual/config/feature-flags.txt", "line": 3 },
+        { "path": "fixtures/multilingual/docs/deploy.md", "line": 4 }
+      ]
+    }
+  ],
+  "summary": "Evidence is sufficient for the requested deployment lookup."
+}

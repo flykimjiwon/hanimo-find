@@ -1,0 +1,48 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://hanimo.dev/find/schema/query-plan/0.1.0",
+  "title": "Hanimo Find QueryPlan 0.1.0",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "query", "root", "quoted_phrases", "identifiers", "terms", "budget"],
+  "properties": {
+    "schema_version": { "const": "0.1.0" },
+    "query": { "type": "string", "maxLength": 4096, "x-maxUtf8Bytes": 4096 },
+    "root": { "type": "string", "minLength": 1, "maxLength": 4096 },
+    "quoted_phrases": { "type": "array", "maxItems": 64, "items": { "type": "string", "minLength": 1, "maxLength": 4096, "x-maxUtf8Bytes": 4096 } },
+    "identifiers": { "type": "array", "maxItems": 64, "items": { "type": "string", "minLength": 1, "maxLength": 4096, "x-maxUtf8Bytes": 4096 } },
+    "terms": { "type": "array", "maxItems": 64, "items": { "type": "string", "minLength": 1, "maxLength": 4096, "x-maxUtf8Bytes": 4096 } },
+    "budget": { "$ref": "#/$defs/budget" }
+  },
+  "$defs": {
+    "budget": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["max_blocks", "context_lines", "max_file_bytes", "max_total_bytes", "max_matches"],
+      "properties": {
+        "max_blocks": { "type": "integer", "minimum": 1, "default": 8 },
+        "context_lines": { "type": "integer", "minimum": 0, "default": 3 },
+        "max_file_bytes": { "type": "integer", "minimum": 1, "default": 1048576 },
+        "max_total_bytes": { "type": "integer", "minimum": 1, "default": 16777216 },
+        "max_matches": { "type": "integer", "minimum": 1, "default": 1000 }
+      }
+    }
+  },
+  "x-hanimo-find-contract": {
+    "schema_version": "0.1.0",
+    "query_limits": {
+      "json_schema_character_max": 4096,
+      "runtime_query_utf8_bytes": 4096,
+      "runtime_aggregate_literal_utf8_bytes": 4096,
+      "runtime_aggregate_literals": 64,
+      "note": "JSON Schema maxLength counts Unicode characters; x-maxUtf8Bytes and aggregate limits are runtime invariants"
+    },
+    "defaults": {
+      "max_blocks": 8,
+      "context_lines": 3,
+      "max_file_bytes": 1048576,
+      "max_total_bytes": 16777216,
+      "max_matches": 1000
+    }
+  }
+}

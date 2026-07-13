@@ -1,0 +1,155 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://hanimo.dev/find/schema/evidence-bundle/0.1.0",
+  "title": "Hanimo Find EvidenceBundle 0.1.0",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "bundle_sha256", "query", "root", "budget", "blocks", "skipped", "critic"],
+  "properties": {
+    "schema_version": { "const": "0.1.0" },
+    "bundle_sha256": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+    "query": { "type": "string", "maxLength": 1048576 },
+    "root": { "type": "string", "minLength": 1, "maxLength": 4096 },
+    "budget": { "$ref": "#/$defs/budget" },
+    "blocks": { "type": "array", "maxItems": 64, "items": { "$ref": "#/$defs/block" } },
+    "skipped": { "type": "array", "maxItems": 65536, "items": { "$ref": "#/$defs/skipped" } },
+    "critic": { "$ref": "#/$defs/critic" }
+  },
+  "allOf": [
+    {
+      "if": { "properties": { "critic": { "properties": { "verdict": { "const": "accepted" } }, "required": ["verdict"] } } },
+      "then": {
+        "properties": {
+          "blocks": { "minItems": 1 },
+          "skipped": {
+            "not": {
+              "contains": {
+                "type": "object",
+                "properties": { "reason": { "const": "budget" } },
+                "required": ["reason"]
+              }
+            }
+          },
+          "critic": { "properties": { "uncovered": { "maxItems": 0 } } }
+        }
+      },
+      "else": {
+        "anyOf": [
+          { "properties": { "blocks": { "maxItems": 0 } } },
+          {
+            "properties": {
+              "skipped": {
+                "contains": {
+                  "type": "object",
+                  "properties": { "reason": { "const": "budget" } },
+                  "required": ["reason"]
+                }
+              }
+            }
+          },
+          { "properties": { "critic": { "properties": { "uncovered": { "minItems": 1 } } } } }
+        ]
+      }
+    }
+  ],
+  "$defs": {
+    "encoded_bytes": {
+      "oneOf": [
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["encoding", "text"],
+            "properties": { "encoding": { "const": "utf8" }, "text": { "type": "string", "maxLength": 16777216 } }
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["encoding", "bytes"],
+          "properties": {
+            "encoding": { "const": "base64" },
+            "bytes": { "type": "string", "maxLength": 16777216, "contentEncoding": "base64", "pattern": "^(?:[A-Za-z0-9+/]{4})*(?:[A-Za-z0-9+/]{2}==|[A-Za-z0-9+/]{3}=)?$" }
+          }
+        }
+      ]
+    },
+    "budget": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["max_blocks", "context_lines", "max_file_bytes", "max_total_bytes", "max_matches"],
+      "properties": {
+        "max_blocks": { "type": "integer", "minimum": 1, "maximum": 64, "default": 8 },
+        "context_lines": { "type": "integer", "minimum": 0, "maximum": 4096, "default": 3 },
+        "max_file_bytes": { "type": "integer", "minimum": 1, "maximum": 16777216, "default": 1048576 },
+        "max_total_bytes": { "type": "integer", "minimum": 1, "maximum": 67108864, "default": 16777216 },
+        "max_matches": { "type": "integer", "minimum": 1, "maximum": 1000000, "default": 1000 }
+      }
+    },
+    "score_components": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["exact_phrase", "identifier", "all_terms", "heading", "path", "proximity"],
+      "properties": {
+        "exact_phrase": { "enum": [0, 300] },
+        "identifier": { "enum": [0, 250] },
+        "all_terms": { "enum": [0, 150] },
+        "heading": { "enum": [0, 75] },
+        "path": { "enum": [0, 50] },
+        "proximity": { "type": "integer", "minimum": 0, "maximum": 40 }
+      }
+    },
+    "block": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["path", "line_start", "line_end", "byte_start", "byte_end", "content", "matched_terms", "score", "score_components", "why", "block_id", "source_sha256"],
+      "properties": {
+        "path": { "$ref": "#/$defs/encoded_bytes" },
+        "line_start": { "type": "integer", "minimum": 1 },
+        "line_end": { "type": "integer", "minimum": 1 },
+        "byte_start": { "type": "integer", "minimum": 0 },
+        "byte_end": { "type": "integer", "minimum": 0 },
+        "content": { "$ref": "#/$defs/encoded_bytes" },
+        "matched_terms": { "type": "array", "maxItems": 4096, "items": { "type": "string", "maxLength": 1048576 } },
+        "score": { "type": "integer", "minimum": 0, "maximum": 865 },
+        "score_components": { "$ref": "#/$defs/score_components" },
+        "why": { "type": "array", "maxItems": 4096, "items": { "type": "string", "maxLength": 1048576 } },
+        "block_id": { "type": "string", "pattern": "^sha256:[0-9a-f]{64}$" },
+        "source_sha256": { "type": "string", "pattern": "^[0-9a-f]{64}$" }
+      }
+    },
+    "skipped": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["path", "reason"],
+      "properties": {
+        "path": { "$ref": "#/$defs/encoded_bytes" },
+        "reason": { "enum": ["ignored", "hidden", "secret", "symlink", "non_regular", "oversized", "budget", "invalid_path", "io_error"] }
+      }
+    },
+    "critic": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["verdict", "covered_quoted_phrases", "covered_identifiers", "uncovered"],
+      "properties": {
+        "verdict": { "enum": ["accepted", "rejected"] },
+        "covered_quoted_phrases": { "type": "array", "maxItems": 4096, "items": { "type": "string", "maxLength": 1048576 } },
+        "covered_identifiers": { "type": "array", "maxItems": 4096, "items": { "type": "string", "maxLength": 1048576 } },
+        "uncovered": { "type": "array", "maxItems": 4096, "items": { "type": "string", "maxLength": 1048576 } }
+      }
+    }
+  },
+  "x-hanimo-find-contract": {
+    "schema_version": "0.1.0",
+    "block_domain": "imnotrag:block:v1\u0000",
+    "block_preimage": "domain || frame(path_bytes) || frame(ascii_decimal(line_start)) || frame(ascii_decimal(line_end)) || frame(canonical_content_bytes); frame=u64be(length)||bytes",
+    "source_sha256": "sha256(exact complete raw file bytes)",
+    "bundle_sha256": "sha256(domain || length-framed immutable payload); integrity only, not a signature",
+    "bundle_domain": "hanimo:evidence-bundle:v1\u0000",
+    "score_components": { "exact_phrase": 300, "identifier": 250, "all_terms": 150, "heading": 75, "path": 50, "proximity_min": 0, "proximity_max": 40 },
+    "sort": ["score_desc", "raw_root_relative_path_asc", "line_asc", "byte_offset_asc", "block_id_asc"],
+    "critic": "accepted iff at least one block exists, uncovered is empty, and no skipped reason is budget; verification recomputes this invariant",
+    "defaults": { "max_blocks": 8, "context_lines": 3, "max_file_bytes": 1048576, "max_total_bytes": 16777216, "max_matches": 1000 },
+    "verification_limits": { "bundle_bytes": 16777216, "blocks": 64, "skipped": 65536, "nested_array_items": 4096, "context_lines": 4096, "max_file_bytes": 16777216, "max_total_bytes": 67108864, "max_matches": 1000000, "aggregate_source_read_bytes": 134217728 },
+    "exits": { "accepted_verified": 0, "no_evidence_or_critic_reject": 1, "usage": 2, "invalid_bundle": 3, "stale_or_forged": 4, "scan_security_io": 5 },
+    "mcp": { "library": "rmcp", "transport": "stdio", "protocol": "JSON-RPC", "stdout": "protocol only" }
+  }
+}

@@ -1,0 +1,50 @@
+[package]
+name = "hanimo-core"
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+license.workspace = true
+readme = "README.md"
+repository.workspace = true
+homepage.workspace = true
+authors.workspace = true
+keywords.workspace = true
+categories.workspace = true
+documentation = "https://docs.rs/hanimo-core"
+description = "Deterministic evidence search core for Hanimo Find"
+publish = false
+include = [
+  "/src/**",
+  "/tests/**",
+  "/LICENSE",
+  "/README.md",
+  "/SECURITY.md",
+  "/SPEC.md",
+  "/RESEARCH.md",
+  "/ROADMAP.md",
+  "/BENCHMARK.md",
+  "/PROVENANCE.md",
+  "/NAME_REVIEW.md",
+  "/PUBLICATION_DECISION.md",
+  "/schema/evidence-bundle.schema.json",
+  "/schema/query-plan.schema.json",
+  "/schema/rag-diagnosis.schema.json",
+]
+
+[lints]
+workspace = true
+
+[dependencies]
+base64.workspace = true
+cap-fs-ext.workspace = true
+cap-std.workspace = true
+hex.workspace = true
+ignore.workspace = true
+serde.workspace = true
+serde_json.workspace = true
+sha2.workspace = true
+thiserror.workspace = true
+
+[dev-dependencies]
+proptest.workspace = true
+tempfile.workspace = true

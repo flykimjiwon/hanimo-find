@@ -1,0 +1,12 @@
+# Default ownership for release, security, and source changes.
+* @flykimjiwon
+
+# Supply-chain policy changes always require owner review.
+/.github/ @flykimjiwon
+/Cargo.lock @flykimjiwon
+/Cargo.toml @flykimjiwon
+/deny.toml @flykimjiwon
+/about.toml @flykimjiwon
+/PROVENANCE.md @flykimjiwon
+/THIRD_PARTY_LICENSES.md @flykimjiwon
+/sbom/ @flykimjiwon
