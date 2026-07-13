@@ -2,7 +2,9 @@
 
 use std::{fs, num::NonZeroUsize, path::Path};
 
-use hanimo_core::{EncodedBytes, QueryPlan, SkipReason, model::Budget, search};
+#[cfg(unix)]
+use hanimo_core::EncodedBytes;
+use hanimo_core::{QueryPlan, SkipReason, model::Budget, search};
 use proptest::prelude::*;
 use sha2::{Digest as _, Sha256};
 use tempfile::TempDir;
