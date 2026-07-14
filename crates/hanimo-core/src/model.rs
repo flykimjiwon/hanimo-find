@@ -228,6 +228,12 @@ pub struct EvidenceBlock {
 }
 
 /// Why a discovered source was not included in evidence.
+///
+/// The v0.1 search scanner emits only `Secret`, `Oversized`, `Budget`, and
+/// `NonRegular`. The remaining variants are part of the frozen interchange
+/// schema and the attestation domain separation for externally authored
+/// bundles; removing them would break verification round-trips even though
+/// no v0.1 producer path emits them.
 #[derive(Debug, Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Serialize, Deserialize)]
 #[serde(rename_all = "snake_case")]
 pub enum SkipReason {

@@ -194,6 +194,77 @@ fn diagnose_findings_and_digest_ignore_filesystem_creation_order() {
     assert_eq!(left_diagnosis, right_diagnosis);
 }
 
+#[test]
+fn diagnose_findings_and_digest_ignore_ancestor_and_repository_context() {
+    // Given: identical sources scanned outside any git repository and inside a
+    // git repository whose ancestor ignore file excludes every Python source.
+    let plain = TempDir::new().expect("plain sandbox is created");
+    let nested = TempDir::new().expect("nested sandbox is created");
+    let nested_root = nested.path().join("child");
+    std::fs::create_dir(&nested_root).expect("nested child root is created");
+    std::fs::create_dir(nested.path().join(".git")).expect("repository marker is created");
+    std::fs::write(nested.path().join(".gitignore"), b"*.py\n")
+        .expect("ancestor ignore file is written");
+    for root in [plain.path(), nested_root.as_path()] {
+        std::fs::write(root.join("a.py"), b"import chromadb\n").expect("source is written");
+        std::fs::write(root.join("ignored.py"), b"import chromadb\n")
+            .expect("ignored source is written");
+        std::fs::write(root.join(".gitignore"), b"ignored.py\n")
+            .expect("root ignore file is written");
+    }
+
+    // When: both roots are diagnosed.
+    let plain_root = canonical_root(plain.path()).expect("plain root canonicalizes");
+    let nested_root = canonical_root(&nested_root).expect("nested root canonicalizes");
+    let plain_diagnosis = diagnose(&plain_root).expect("plain diagnosis succeeds");
+    let nested_diagnosis = diagnose(&nested_root).expect("nested diagnosis succeeds");
+
+    // Then: ancestor ignore context and repository detection change nothing,
+    // and the root-level ignore file is honored without any git repository.
+    assert_eq!(plain_diagnosis, nested_diagnosis);
+    assert!(
+        plain_diagnosis
+            .findings
+            .iter()
+            .flat_map(|finding| &finding.citations)
+            .all(|citation| citation.path != "ignored.py")
+    );
+    assert!(
+        plain_diagnosis
+            .findings
+            .iter()
+            .flat_map(|finding| &finding.citations)
+            .any(|citation| citation.path == "a.py")
+    );
+}
+
+#[test]
+fn diagnose_visits_sources_in_root_relative_raw_byte_order() {
+    // Given: sibling paths whose component order and raw-byte order disagree:
+    // raw bytes place "a-b.py" (0x2D) before "a/b.py" (0x2F).
+    let sandbox = TempDir::new().expect("sandbox is created");
+    std::fs::create_dir(sandbox.path().join("a")).expect("nested directory is created");
+    for path in ["a/b.py", "a-b.py"] {
+        std::fs::write(sandbox.path().join(path), b"import chromadb\n")
+            .expect("sibling source is written");
+    }
+
+    // When: the repository is diagnosed.
+    let root = canonical_root(sandbox.path()).expect("sandbox root canonicalizes");
+    let diagnosis = diagnose(&root).expect("sibling diagnosis succeeds");
+
+    // Then: the first citation follows the canonical raw-byte source order.
+    assert_eq!(
+        diagnosis
+            .findings
+            .iter()
+            .find(|finding| finding.rule_id == RuleId::VectorStoreDependency)
+            .and_then(|finding| finding.citations.first())
+            .map(|citation| citation.path.as_str()),
+        Some("a-b.py")
+    );
+}
+
 const fn budget(candidate_files: usize, file_bytes: usize, total_bytes: usize) -> DiagnoseBudget {
     DiagnoseBudget {
         max_candidate_files: nonzero(candidate_files),

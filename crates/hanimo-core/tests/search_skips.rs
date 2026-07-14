@@ -78,6 +78,47 @@ fn search_reports_discovered_secret_and_oversized_sources() {
 }
 
 #[test]
+fn search_skips_key_material_and_credential_named_sources() {
+    // Given: one public match plus key-material and credential-named files
+    // that carry no generic secret/token substring.
+    let sandbox = TempDir::new().expect("sandbox is created");
+    write(sandbox.path(), "public.txt", b"needle\n");
+    write(sandbox.path(), "id_rsa", b"needle\n");
+    write(sandbox.path(), "server.p12", b"needle\n");
+    write(sandbox.path(), "api_key.txt", b"needle\n");
+    write(sandbox.path(), "passwords.txt", b"needle\n");
+
+    // When: the bounded search scans the root.
+    let root = canonical_root(sandbox.path()).expect("test root canonicalizes");
+    let result = search(&root, &plan("needle")).expect("search succeeds");
+
+    // Then: only the public source becomes evidence and every credential-like
+    // path is a typed secret gap in deterministic raw-byte order.
+    assert_eq!(result.blocks.len(), 1);
+    assert_eq!(
+        result
+            .blocks
+            .first()
+            .and_then(|block| path_text(&block.path)),
+        Some("public.txt")
+    );
+    let actual: Vec<_> = result
+        .skipped
+        .iter()
+        .map(|gap| (path_text(&gap.path), gap.reason))
+        .collect();
+    assert_eq!(
+        actual,
+        [
+            (Some("api_key.txt"), SkipReason::Secret),
+            (Some("id_rsa"), SkipReason::Secret),
+            (Some("passwords.txt"), SkipReason::Secret),
+            (Some("server.p12"), SkipReason::Secret),
+        ]
+    );
+}
+
+#[test]
 fn search_returns_a_partial_result_with_total_byte_budget_gaps() {
     // Given: two ordered matches but only enough total-byte budget for the first.
     let sandbox = TempDir::new().expect("sandbox is created");

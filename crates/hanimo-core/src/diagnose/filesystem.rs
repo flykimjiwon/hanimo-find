@@ -49,26 +49,41 @@ where
     let absolute = opened_root.absolute;
     let root = opened_root.directory;
     let mut builder = WalkBuilder::new(&absolute);
+    // Mirror the search walker's hermetic ignore policy: global git ignore
+    // files, ancestor ignore files, and git-repository detection must not
+    // change diagnosis findings or the reported digest across environments.
     builder
         .follow_links(false)
-        .sort_by_file_path(std::cmp::Ord::cmp);
-    let mut candidate_files = 0_usize;
-    let mut total_bytes = 0_usize;
+        .hidden(true)
+        .ignore(true)
+        .git_ignore(true)
+        .git_global(false)
+        .git_exclude(true)
+        .parents(false)
+        .require_git(false);
+    let mut sources = Vec::new();
     for entry in builder.build() {
         let entry = entry?;
         if entry.depth() == 0 || !entry.file_type().is_some_and(|kind| kind.is_file()) {
             continue;
         }
-        if candidate_files == budget.max_candidate_files.get() {
+        if sources.len() == budget.max_candidate_files.get() {
             return Err(DiagnoseError::BudgetExceeded(DiagnoseLimit::CandidateFiles));
         }
-        candidate_files = candidate_files.saturating_add(1);
         let relative = entry
             .path()
             .strip_prefix(&absolute)
-            .map_err(|_| DiagnoseError::InvalidPath)?;
-        let display = relative_utf8(relative)?;
-        (callbacks.before_open)(relative);
+            .map_err(|_| DiagnoseError::InvalidPath)?
+            .to_path_buf();
+        let display = relative_utf8(&relative)?;
+        sources.push(DiscoveredSource { relative, display });
+    }
+    // Sort the complete stream by canonical root-relative raw path bytes so
+    // diagnosis shares the search scanner's one canonical source order.
+    sources.sort_by(|left, right| left.display.as_bytes().cmp(right.display.as_bytes()));
+    let mut total_bytes = 0_usize;
+    for source in &sources {
+        (callbacks.before_open)(&source.relative);
         let remaining = budget
             .max_total_bytes
             .get()
@@ -76,7 +91,7 @@ where
             .ok_or(DiagnoseError::BudgetExceeded(DiagnoseLimit::TotalBytes))?;
         let bytes = read_nofollow(
             &root,
-            relative,
+            &source.relative,
             &ReadBudget {
                 maximum_file: budget.max_file_bytes.get(),
                 remaining_total: remaining,
@@ -85,9 +100,14 @@ where
         total_bytes = total_bytes
             .checked_add(bytes.len())
             .ok_or(DiagnoseError::BudgetExceeded(DiagnoseLimit::TotalBytes))?;
-        (callbacks.visit)(&display, &bytes);
+        (callbacks.visit)(&source.display, &bytes);
     }
     Ok(())
+}
+
+struct DiscoveredSource {
+    relative: std::path::PathBuf,
+    display: String,
 }
 
 fn read_nofollow(
