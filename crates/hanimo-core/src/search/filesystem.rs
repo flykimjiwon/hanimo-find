@@ -192,10 +192,28 @@ fn is_secret_like(path: &[u8]) -> bool {
             || lower.starts_with(b".env")
             || lower.ends_with(b".key")
             || lower.ends_with(b".pem")
+            || is_key_material_name(&lower)
             || lower.windows(6).any(|window| window == b"secret")
             || lower.windows(5).any(|window| window == b"token")
             || lower.windows(10).any(|window| window == b"credential")
+            || lower.windows(8).any(|window| window == b"password")
+            || lower.windows(7).any(|window| window == b"api_key")
+            || lower.windows(6).any(|window| window == b"apikey")
     })
+}
+
+/// Common private-key and keystore container names that carry no generic
+/// `secret`/`token` substring but must never become evidence content.
+fn is_key_material_name(lower: &[u8]) -> bool {
+    lower == b"id_rsa"
+        || lower == b"id_dsa"
+        || lower == b"id_ecdsa"
+        || lower == b"id_ed25519"
+        || lower.ends_with(b".p12")
+        || lower.ends_with(b".pfx")
+        || lower.ends_with(b".ppk")
+        || lower.ends_with(b".jks")
+        || lower.ends_with(b".keystore")
 }
 
 #[cfg(unix)]
