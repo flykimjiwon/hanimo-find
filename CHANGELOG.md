@@ -18,6 +18,12 @@ release announcement.
 
 ### Added
 
+- MCP stdio tools `verify_evidence` and `diagnose_repo` alongside
+  `search_evidence`, closing the search → act → re-verify loop for MCP
+  clients with the same acceptance condition as CLI exit 0.
+- An MCP client integration guide (`docs/MCP.md`) with per-tool contracts and
+  Claude Code configuration.
+- Source installation instructions with the minimum supported Rust version.
 - v0.1 `search`, `verify`, `diagnose`, and MCP stdio command documentation.
 - Public research corrections for logical retrieval, compiled wikis, structured
   retrieval, long-context caching, and publication-oriented synthesis systems.

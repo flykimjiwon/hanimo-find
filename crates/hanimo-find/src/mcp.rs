@@ -1,5 +1,9 @@
 use std::path::{Component, Path, PathBuf};
 
+use hanimo_core::{
+    CriticVerdict, EvidenceBundle, MAX_VERIFY_BUNDLE_BYTES, VerificationStatus, diagnose,
+    model::SCHEMA_VERSION, verify,
+};
 use rmcp::{
     ErrorData, ServerHandler, ServiceExt, handler::server::wrapper::Parameters,
     model::CallToolResult, tool, tool_handler, tool_router, transport::stdio,
@@ -14,6 +18,24 @@ use crate::search_adapter::search_evidence;
 #[serde(deny_unknown_fields)]
 struct SearchEvidenceArgs {
     query: String,
+    /// Optional relative subpath beneath the MCP server's startup directory.
+    path: Option<String>,
+}
+
+#[derive(Debug, Deserialize, JsonSchema)]
+#[serde(deny_unknown_fields)]
+struct VerifyEvidenceArgs {
+    /// Authoritative `EvidenceBundle` JSON exactly as returned by
+    /// `search_evidence` or `hanimo find search --format json`.
+    bundle_json: String,
+    /// Optional relative subpath beneath the MCP server's startup directory.
+    /// The resolved target must equal the bundle's recorded display root.
+    path: Option<String>,
+}
+
+#[derive(Debug, Deserialize, JsonSchema)]
+#[serde(deny_unknown_fields)]
+struct DiagnoseRepoArgs {
     /// Optional relative subpath beneath the MCP server's startup directory.
     path: Option<String>,
 }
@@ -42,6 +64,81 @@ impl SearchServer {
             Err(error) if error.is_usage() => {
                 Err(ErrorData::invalid_params(error.to_string(), None))
             }
+            Err(error) => Ok(CallToolResult::structured_error(serde_json::json!({
+                "error": error.to_string()
+            }))),
+        }
+    }
+
+    #[tool(
+        name = "verify_evidence",
+        description = "Reopen the cited source bytes of an evidence bundle and reject stale, forged, or drifted evidence"
+    )]
+    fn verify_evidence(
+        &self,
+        Parameters(arguments): Parameters<VerifyEvidenceArgs>,
+    ) -> Result<CallToolResult, ErrorData> {
+        let root = resolve_target(&self.base_root, arguments.path.as_deref())
+            .map_err(|error| ErrorData::invalid_params(error.to_string(), None))?;
+        if arguments.bundle_json.len() > MAX_VERIFY_BUNDLE_BYTES {
+            return Err(ErrorData::invalid_params(
+                format!(
+                    "evidence bundle exceeds {MAX_VERIFY_BUNDLE_BYTES}-byte verification input limit"
+                ),
+                None,
+            ));
+        }
+        let bundle: EvidenceBundle = serde_json::from_str(&arguments.bundle_json)
+            .map_err(|error| ErrorData::invalid_params(error.to_string(), None))?;
+        if bundle.schema_version != SCHEMA_VERSION || bundle.root.is_empty() {
+            return Err(ErrorData::invalid_params(
+                "unsupported schema or empty root",
+                None,
+            ));
+        }
+        if root.to_str() != Some(&bundle.root) {
+            return Ok(CallToolResult::structured_error(serde_json::json!({
+                "error": "trusted verification root does not match recorded display root"
+            })));
+        }
+        match verify(&root, &bundle) {
+            Ok(report) => {
+                let accepted = report.status == VerificationStatus::Verified
+                    && bundle.critic.verdict == CriticVerdict::Accepted;
+                serde_json::to_value(&report)
+                    .map(|report| {
+                        CallToolResult::structured(serde_json::json!({
+                            "accepted": accepted,
+                            "report": report
+                        }))
+                    })
+                    .map_err(|error| ErrorData::internal_error(error.to_string(), None))
+            }
+            Err(error) => {
+                if let Some(reason) = error.invalid_bundle_reason() {
+                    return Err(ErrorData::invalid_params(reason, None));
+                }
+                Ok(CallToolResult::structured_error(serde_json::json!({
+                    "error": error.to_string()
+                })))
+            }
+        }
+    }
+
+    #[tool(
+        name = "diagnose_repo",
+        description = "Statically diagnose a local repository for the versioned imnotrag RAG-risk rules"
+    )]
+    fn diagnose_repo(
+        &self,
+        Parameters(arguments): Parameters<DiagnoseRepoArgs>,
+    ) -> Result<CallToolResult, ErrorData> {
+        let root = resolve_target(&self.base_root, arguments.path.as_deref())
+            .map_err(|error| ErrorData::invalid_params(error.to_string(), None))?;
+        match diagnose::diagnose(&root) {
+            Ok(diagnosis) => serde_json::to_value(diagnosis)
+                .map(CallToolResult::structured)
+                .map_err(|error| ErrorData::internal_error(error.to_string(), None)),
             Err(error) => Ok(CallToolResult::structured_error(serde_json::json!({
                 "error": error.to_string()
             }))),
