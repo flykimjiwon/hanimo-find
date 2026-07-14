@@ -21,7 +21,7 @@ The `hanimo` binary currently exposes four `find` subcommands:
 | `hanimo find search` | Scan a local root for exact UTF-8 byte literals and emit an EvidenceBundle as JSON or Markdown. |
 | `hanimo find verify` | Reopen the cited sources and reject invalid, stale, or forged bundle evidence. |
 | `hanimo find diagnose` | Statically inspect a repository for the versioned `imnotrag` diagnostic rules. |
-| `hanimo find mcp` | Serve one `search_evidence` tool over MCP stdio using `rmcp`. |
+| `hanimo find mcp` | Serve the `search_evidence`, `verify_evidence`, and `diagnose_repo` tools over MCP stdio using `rmcp`. |
 
 The v0.1 scanner is bounded. Its defaults select at most 8 evidence blocks,
 read at most 1 MiB per file and 16 MiB in total, accept at most 1,000 literal
@@ -49,16 +49,27 @@ a time. It reopens every path beneath a root capability without following
 symlinks. Exceeding a diagnosis limit fails closed with exit 5 and no partial
 JSON result.
 
-## Build and use
+## Install
 
-Build from this checkout with the locked dependency graph:
+The project is a source beta: it is not published to crates.io and no prebuilt
+binaries are attached to releases yet, so both crates set `publish = false` and
+installation is from source. The minimum supported Rust version is **1.88.0**
+(`rust-toolchain.toml` pins the stable channel).
+
+Install straight from the repository with the locked dependency graph:
+
+```sh
+cargo install --git https://github.com/flykimjiwon/hanimo-find hanimo-find --locked
+```
+
+or build from a checkout:
 
 ```sh
 cargo build --locked --release
 ```
 
-The examples below assume `target/release` is on `PATH` or the built binary has
-been installed as `hanimo`.
+Both produce one `hanimo` binary. The examples below assume `target/release`
+is on `PATH` or the built binary has been installed as `hanimo`.
 
 ```sh
 hanimo find --help
@@ -81,14 +92,19 @@ hanimo find mcp
 ```
 
 Launch the server from the directory it is authorized to search. It captures
-that canonical startup directory as its trusted base. The tool's optional
+that canonical startup directory as its trusted base and serves three tools:
+`search_evidence`, `verify_evidence`, and `diagnose_repo`. Each tool's optional
 `path` argument is a relative nested directory beneath that base. The MCP
 boundary accepts only normal relative components and joins them lexically
 without resolving or reopening the request path; core search then acquires the
 directory component by component without following symlinks. Absolute, parent,
 dot, platform-prefix, unavailable, non-directory, and symlinked paths are
-rejected. Omitting `path` searches the trusted base. An MCP client should use
-normal JSON-RPC framing and must not mix human-readable output into stdout.
+rejected. Omitting `path` targets the trusted base. `verify_evidence` accepts
+the authoritative bundle JSON, requires the resolved target to equal the
+bundle's recorded display root, and returns the live verification report with
+an `accepted` flag equivalent to CLI exit 0. An MCP client should use normal
+JSON-RPC framing and must not mix human-readable output into stdout. Client
+configuration and per-tool contracts are documented in [docs/MCP.md](docs/MCP.md).
 
 ## Evidence and verification boundary
 

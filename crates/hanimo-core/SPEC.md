@@ -225,15 +225,27 @@ only. Logs, diagnostics, and human-readable errors go to standard error. The v0
 contract does not define a network server.
 
 The server captures its canonical current directory once at startup as the MCP
-search authority. `search_evidence.path` is optional; when present it must be a
-non-empty sequence of normal relative directory components beneath that base.
-The MCP boundary validates that syntax and returns the lexical base-relative
-join without resolving, canonicalizing, or reopening the requested subpath.
-Core search owns capability acquisition and opens every directory component
-without following symlinks. Absolute paths, `.`, `..`, platform prefixes/root
-components, missing or non-directory targets, and final or intermediate
-symlinks are errors. Omitting `path` selects the startup base. A request never
-creates a caller-selected ambient root capability.
+target authority. Every tool's `path` argument is optional; when present it
+must be a non-empty sequence of normal relative directory components beneath
+that base. The MCP boundary validates that syntax and returns the lexical
+base-relative join without resolving, canonicalizing, or reopening the
+requested subpath. Core acquisition owns the capability and opens every
+directory component without following symlinks. Absolute paths, `.`, `..`,
+platform prefixes/root components, missing or non-directory targets, and final
+or intermediate symlinks are errors. Omitting `path` selects the startup base.
+A request never creates a caller-selected ambient root capability.
+
+The server exposes three tools sharing that boundary. `search_evidence`
+returns the authoritative EvidenceBundle for `query` over the resolved target.
+`verify_evidence` accepts the authoritative bundle JSON (bounded by the same
+16 MiB verification input limit as the CLI, checked before deserialization),
+requires the resolved target to equal the bundle's recorded display root, and
+returns the live verification report with an `accepted` flag that is true
+exactly when the status is `verified` and the bundle's critic verdict is
+`accepted` — the CLI exit 0 condition. Stale, forged, and drift outcomes are
+returned in-band; malformed or schema-unsupported bundles are parameter
+errors. `diagnose_repo` returns the authoritative `RagDiagnosis` for the
+resolved target under the same fail-closed diagnosis envelope as the CLI.
 
 ## 10. Conformance and implementation boundary
 
