@@ -23,6 +23,10 @@ release announcement.
 
 ### Added
 
+- A release workflow (`.github/workflows/release.yml`) that builds the three
+  native targets on a `v*` tag, packages each with a SHA-256 checksum, and
+  attaches them to a draft GitHub Release; it also runs via `workflow_dispatch`
+  to produce build artifacts without tagging.
 - Consumer, threat-model, release-verification, and positioning guides
   (`docs/CONSUMING_EVIDENCE.md`, `THREAT_MODEL.md`, `docs/VERIFYING_RELEASES.md`,
   `FAQ.md`).

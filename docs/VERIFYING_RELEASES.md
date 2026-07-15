@@ -222,9 +222,14 @@ State this plainly so no consumer over-reads the checks above.
   detached signatures, no in-toto/SLSA provenance attestation are published at
   this stage. `git verify-commit` and `git tag --verify` will find nothing to
   verify.
-- **No published binaries.** There are no prebuilt binaries attached to releases
-  and nothing on crates.io (`publish = false`). You build from source, which
-  means your toolchain and build environment are part of your trust base.
+- **No published binaries yet.** No version has been tagged, so no prebuilt
+  binaries are attached to a release and nothing is on crates.io
+  (`publish = false`). You build from source, which means your toolchain and
+  build environment are part of your trust base. When a `v*` tag is released, the
+  release workflow (`.github/workflows/release.yml`) attaches a per-target
+  archive with a `.sha256` file; verify a download with
+  `sha256sum -c <archive>.sha256` before use. Those checksums are unkeyed
+  integrity checks (see the next point), not signatures.
 - **Digests are unkeyed.** The per-file SHA-256 hashes in the SBOM, the
   `source_sha256` on each evidence block, and `bundle_sha256` are all unkeyed
   integrity checksums. As stated in [SECURITY.md](../SECURITY.md),

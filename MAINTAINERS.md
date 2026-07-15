@@ -36,6 +36,14 @@ Releases follow [RELEASE_GATE.md](RELEASE_GATE.md). The maintainer runs the
 fail-closed gate locally and via hosted CI (Linux, macOS, Windows, and the
 declared MSRV) before tagging. Version tags are protected by the ruleset above.
 
+Pushing a `v*` tag triggers the release workflow
+(`.github/workflows/release.yml`), which builds the three native targets
+(`x86_64-unknown-linux-gnu`, `aarch64-apple-darwin`, `x86_64-pc-windows-msvc`),
+packages each with a SHA-256 checksum, and attaches them to a **draft** GitHub
+Release. Nothing is published automatically: the maintainer reviews the draft
+and the CI status, then publishes it manually. The workflow can also be run via
+`workflow_dispatch` to produce downloadable build artifacts without tagging.
+
 ## Security response
 
 Report vulnerabilities through the route in [SECURITY.md](SECURITY.md); do not
