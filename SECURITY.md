@@ -14,7 +14,8 @@ for this repository. Use the **Report a vulnerability** button on the repository
 Security tab, or open one directly:
 <https://github.com/flykimjiwon/hanimo-find/security/advisories/new>.
 
-This is a single-maintainer project (see [MAINTAINERS.md](MAINTAINERS.md)), so
+This is a single-maintainer project (see
+[MAINTAINERS.md](https://github.com/flykimjiwon/hanimo-find/blob/main/MAINTAINERS.md)), so
 triage is best effort with no guaranteed timeline. If the private route is ever
 unavailable, retain the report locally and contact the maintainer through an
 independently known private channel before sharing sensitive material.

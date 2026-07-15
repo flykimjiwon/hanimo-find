@@ -23,6 +23,12 @@ release announcement.
 
 ### Added
 
+- The crate package now ships the MCP, evidence-consumer, threat-model, and FAQ
+  reference docs, and the release gate fails closed if any packaged Markdown
+  links to a non-packaged target (`scripts/check_package_links.py`). Links to
+  repository-governance and release-infrastructure docs are absolute URLs so the
+  packaged README and its docs have no broken relative links for a crates.io or
+  docs.rs reader.
 - A release workflow (`.github/workflows/release.yml`) that builds the three
   native targets on a `v*` tag, packages each with a SHA-256 checksum, and
   attaches them to a draft GitHub Release; it also runs via `workflow_dispatch`
