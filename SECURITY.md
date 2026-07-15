@@ -7,20 +7,17 @@ The only frozen protocol version is `0.1.0`. There is no production release yet.
 ## Reporting
 
 Do not publish suspected vulnerabilities, secret material, exploit payloads, or
-private repository contents in a public issue. As of 2026-07-14, the intended
-`flykimjiwon/hanimo-find` GitHub repository has not been created and no monitored
-remote security-reporting channel exists. GitHub private vulnerability
-reporting is available only for public repositories, so keep the staging
-repository private through hosted CI and the other private-stage gates. Then
-change the repository to public and immediately enable and verify private
-vulnerability reporting, including the visible `Report a vulnerability` route,
-before announcing the repository or creating any tag or release. Update this
-section with the confirmed route. If enablement or verification fails, return
-the repository to private visibility when possible; otherwise halt all
-announcement, tagging, and release activity and document a private fallback
-reporting route before proceeding. Until the GitHub route is verified, retain
-the report locally and contact the owner through an independently known private
-channel before sharing sensitive material.
+private repository contents in a public issue.
+
+Report privately through GitHub private vulnerability reporting, which is enabled
+for this repository. Use the **Report a vulnerability** button on the repository
+Security tab, or open one directly:
+<https://github.com/flykimjiwon/hanimo-find/security/advisories/new>.
+
+This is a single-maintainer project (see [MAINTAINERS.md](MAINTAINERS.md)), so
+triage is best effort with no guaranteed timeline. If the private route is ever
+unavailable, retain the report locally and contact the maintainer through an
+independently known private channel before sharing sensitive material.
 
 Include the affected schema version, minimal reproduction, expected and actual
 exit status, and whether a root escape, symlink traversal, stale-evidence bypass,

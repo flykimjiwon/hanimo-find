@@ -1,0 +1,13 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Security or vulnerability report
+    url: https://github.com/flykimjiwon/hanimo-find/security/advisories/new
+    about: >-
+      Do NOT open a public issue for a suspected vulnerability, secret material,
+      exploit payload, or private repository contents. Use GitHub private
+      vulnerability reporting. See SECURITY.md.
+  - name: Question or positioning
+    url: https://github.com/flykimjiwon/hanimo-find/blob/main/FAQ.md
+    about: >-
+      "Why not ripgrep?", "Is this anti-RAG?", byte-exact matching, and other
+      positioning questions are answered in the FAQ.
