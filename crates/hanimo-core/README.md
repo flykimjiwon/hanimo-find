@@ -51,9 +51,9 @@ JSON result.
 
 ## Install
 
-The project is a source beta: it is not published to crates.io and no prebuilt
-binaries are attached to releases yet, so both crates set `publish = false` and
-installation is from source. The minimum supported Rust version is **1.88.0**
+The project is a source beta: it is not published to crates.io and no version
+has been tagged yet, so both crates set `publish = false` and installation is
+from source. The minimum supported Rust version is **1.88.0**
 (`rust-toolchain.toml` pins the stable channel).
 
 Install straight from the repository with the locked dependency graph:
@@ -70,6 +70,19 @@ cargo build --locked --release
 
 Both produce one `hanimo` binary. The examples below assume `target/release`
 is on `PATH` or the built binary has been installed as `hanimo`.
+
+### Prebuilt binaries
+
+Each tagged release attaches per-platform archives — for
+`x86_64-unknown-linux-gnu`, `aarch64-apple-darwin`, and
+`x86_64-pc-windows-msvc` — each with a SHA-256 checksum, built by the release
+workflow (`.github/workflows/release.yml`). No version has been tagged yet, so
+build from source for now. When a release is published, verify a download
+before use:
+
+```sh
+sha256sum -c hanimo-<version>-<target>.tar.gz.sha256
+```
 
 ```sh
 hanimo find --help

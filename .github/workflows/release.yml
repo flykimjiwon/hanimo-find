@@ -1,0 +1,98 @@
+name: Release
+
+on:
+  push:
+    tags: ["v*"]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: release-${{ github.ref }}
+  cancel-in-progress: false
+
+env:
+  CARGO_TERM_COLOR: always
+
+jobs:
+  build:
+    name: Build ${{ matrix.target }}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - os: ubuntu-latest
+            target: x86_64-unknown-linux-gnu
+          - os: macos-latest
+            target: aarch64-apple-darwin
+          - os: windows-latest
+            target: x86_64-pc-windows-msvc
+    steps:
+      - name: Check out source
+        uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
+
+      - name: Install stable Rust
+        shell: bash
+        run: |
+          rustup toolchain install stable --profile minimal
+          rustup override set stable
+          rustup target add "${{ matrix.target }}"
+
+      - name: Build release binary
+        shell: bash
+        run: cargo build --locked --release --target "${{ matrix.target }}" --bin hanimo
+
+      - name: Package archive and checksum
+        id: package
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p dist
+          if [ "${GITHUB_REF_TYPE}" = "tag" ]; then
+            version="${GITHUB_REF_NAME#v}"
+          else
+            version="${GITHUB_SHA::7}"
+          fi
+          bin="hanimo"
+          if [ "${RUNNER_OS}" = "Windows" ]; then
+            bin="hanimo.exe"
+          fi
+          stage="hanimo-${version}-${{ matrix.target }}"
+          mkdir "${stage}"
+          cp "target/${{ matrix.target }}/release/${bin}" "${stage}/"
+          cp LICENSE README.md "${stage}/"
+          if [ "${RUNNER_OS}" = "Windows" ]; then
+            7z a -bd "dist/${stage}.zip" "${stage}" >/dev/null
+            asset="${stage}.zip"
+          else
+            tar -czf "dist/${stage}.tar.gz" "${stage}"
+            asset="${stage}.tar.gz"
+          fi
+          ( cd dist && sha256sum "${asset}" > "${asset}.sha256" )
+          echo "asset=${asset}" >> "${GITHUB_OUTPUT}"
+
+      - name: Upload workflow artifact
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: hanimo-${{ matrix.target }}
+          path: dist/*
+          if-no-files-found: error
+          retention-days: 30
+
+      - name: Attach to draft release
+        if: github.ref_type == 'tag'
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          tag="${GITHUB_REF_NAME}"
+          # Create the draft release once; concurrent matrix jobs tolerate "already exists".
+          gh release create "${tag}" \
+            --draft \
+            --verify-tag \
+            --generate-notes \
+            --title "${tag}" 2>/dev/null || true
+          gh release upload "${tag}" dist/* --clobber
