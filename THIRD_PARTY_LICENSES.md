@@ -2682,7 +2682,6 @@ Used by:
 - [rustix 1.1.4](https://github.com/bytecodealliance/rustix)
 - [rusty-fork 0.3.1](https://github.com/altsysrq/rusty-fork)
 - [tempfile 3.27.0](https://github.com/Stebalien/tempfile)
-- [version_check 0.9.5](https://github.com/SergioBenitez/version_check)
 - [wait-timeout 0.2.1](https://github.com/alexcrichton/wait-timeout)
 - [wasm-bindgen-macro-support 0.2.126](https://github.com/wasm-bindgen/wasm-bindgen/tree/master/crates/macro-support)
 - [wasm-bindgen-macro 0.2.126](https://github.com/wasm-bindgen/wasm-bindgen/tree/master/crates/macro)
@@ -3119,11 +3118,13 @@ limitations under the License.
 ## Apache License 2.0
 
 Used by:
-- [block-buffer 0.10.4](https://github.com/RustCrypto/utils)
-- [cpufeatures 0.2.17](https://github.com/RustCrypto/utils)
-- [crypto-common 0.1.7](https://github.com/RustCrypto/traits)
-- [digest 0.10.7](https://github.com/RustCrypto/traits)
-- [sha2 0.10.9](https://github.com/RustCrypto/hashes)
+- [block-buffer 0.12.1](https://github.com/RustCrypto/utils)
+- [const-oid 0.10.2](https://github.com/RustCrypto/formats)
+- [cpufeatures 0.3.0](https://github.com/RustCrypto/utils)
+- [crypto-common 0.2.2](https://github.com/RustCrypto/traits)
+- [digest 0.11.3](https://github.com/RustCrypto/traits)
+- [hybrid-array 0.4.13](https://github.com/RustCrypto/hybrid-array)
+- [sha2 0.11.0](https://github.com/RustCrypto/hashes)
 
 <details>
 <summary>License text</summary>
@@ -4533,40 +4534,6 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 
-```
-
-</details>
-
-## MIT License
-
-Used by:
-- [generic-array 0.14.7](https://github.com/fizyk20/generic-array.git)
-
-<details>
-<summary>License text</summary>
-
-```text
-The MIT License (MIT)
-
-Copyright (c) 2015 Bartłomiej Kamiński
-
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
-
-The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-SOFTWARE.
 ```
 
 </details>

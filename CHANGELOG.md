@@ -6,6 +6,13 @@ production announcement.
 
 ## Unreleased
 
+### Changed
+
+- Bumped `sha2` from 0.10.9 to 0.11.0 (with its `digest` 0.11 dependency tree).
+  SHA-256 output is unchanged, so every conformance digest and the exact
+  `block_id`, `source_sha256`, and `bundle_sha256` values are identical; the
+  SBOMs and third-party license notices were regenerated.
+
 ## 0.1.0 - 2026-07-15
 
 ### Fixed

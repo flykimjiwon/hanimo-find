@@ -379,8 +379,8 @@
     },
     {
       "author": "RustCrypto Developers",
-      "bom-ref": "registry+https://github.com/rust-lang/crates.io-index#block-buffer@0.10.4",
-      "description": "Buffer type for block processing of data",
+      "bom-ref": "registry+https://github.com/rust-lang/crates.io-index#block-buffer@0.12.1",
+      "description": "Buffer types for block processing of data",
       "externalReferences": [
         {
           "type": "documentation",
@@ -394,7 +394,7 @@
       "hashes": [
         {
           "alg": "SHA-256",
-          "content": "3078c7629b62d3f0439517fa394996acacc5cbc91c5a20d8c658e77abd503a71"
+          "content": "d2f6c7dbe95a6ed67ad9f18e57daf93a2f034c524b99fd2b76d18fdfeb6660aa"
         }
       ],
       "licenses": [
@@ -403,10 +403,10 @@
         }
       ],
       "name": "block-buffer",
-      "purl": "pkg:cargo/block-buffer@0.10.4",
+      "purl": "pkg:cargo/block-buffer@0.12.1",
       "scope": "required",
       "type": "library",
-      "version": "0.10.4"
+      "version": "0.12.1"
     },
     {
       "author": "Andrew Gallant <jamslam@gmail.com>",
@@ -809,6 +809,41 @@
       "version": "1.0.5"
     },
     {
+      "author": "RustCrypto Developers",
+      "bom-ref": "registry+https://github.com/rust-lang/crates.io-index#const-oid@0.10.2",
+      "description": "Const-friendly implementation of the ISO/IEC Object Identifier (OID) standard as defined in ITU X.660, with support for BER/DER encoding/decoding as well as heapless no_std (i.e. embedded) support ",
+      "externalReferences": [
+        {
+          "type": "documentation",
+          "url": "https://docs.rs/const-oid"
+        },
+        {
+          "type": "website",
+          "url": "https://github.com/RustCrypto/formats/tree/master/const-oid"
+        },
+        {
+          "type": "vcs",
+          "url": "https://github.com/RustCrypto/formats"
+        }
+      ],
+      "hashes": [
+        {
+          "alg": "SHA-256",
+          "content": "a6ef517f0926dd24a1582492c791b6a4818a4d94e789a334894aa15b0d12f55c"
+        }
+      ],
+      "licenses": [
+        {
+          "expression": "Apache-2.0 OR MIT"
+        }
+      ],
+      "name": "const-oid",
+      "purl": "pkg:cargo/const-oid@0.10.2",
+      "scope": "required",
+      "type": "library",
+      "version": "0.10.2"
+    },
+    {
       "author": "The Servo Project Developers",
       "bom-ref": "registry+https://github.com/rust-lang/crates.io-index#core-foundation-sys@0.8.7",
       "description": "Bindings to Core Foundation for macOS",
@@ -841,8 +876,8 @@
     },
     {
       "author": "RustCrypto Developers",
-      "bom-ref": "registry+https://github.com/rust-lang/crates.io-index#cpufeatures@0.2.17",
-      "description": "Lightweight runtime CPU feature detection for aarch64, loongarch64, and x86/x86_64 targets,  with no_std support and support for mobile targets including Android and iOS ",
+      "bom-ref": "registry+https://github.com/rust-lang/crates.io-index#cpufeatures@0.3.0",
+      "description": "Lightweight runtime CPU feature detection for aarch64, loongarch64, and x86/x86_64 targets, with no_std support and support for mobile targets including Android and iOS ",
       "externalReferences": [
         {
           "type": "documentation",
@@ -856,7 +891,7 @@
       "hashes": [
         {
           "alg": "SHA-256",
-          "content": "59ed5838eebb26a2bb2e58f6d5b5316989ae9d08bab10e0e6d103e656d1b0280"
+          "content": "8b2a41393f66f16b0823bb79094d54ac5fbd34ab292ddafb9a0456ac9f87d201"
         }
       ],
       "licenses": [
@@ -865,10 +900,10 @@
         }
       ],
       "name": "cpufeatures",
-      "purl": "pkg:cargo/cpufeatures@0.2.17",
+      "purl": "pkg:cargo/cpufeatures@0.3.0",
       "scope": "required",
       "type": "library",
-      "version": "0.2.17"
+      "version": "0.3.0"
     },
     {
       "bom-ref": "registry+https://github.com/rust-lang/crates.io-index#crossbeam-deque@0.8.7",
@@ -962,8 +997,8 @@
     },
     {
       "author": "RustCrypto Developers",
-      "bom-ref": "registry+https://github.com/rust-lang/crates.io-index#crypto-common@0.1.7",
-      "description": "Common cryptographic traits",
+      "bom-ref": "registry+https://github.com/rust-lang/crates.io-index#crypto-common@0.2.2",
+      "description": "Common traits used by cryptographic algorithms",
       "externalReferences": [
         {
           "type": "documentation",
@@ -977,7 +1012,7 @@
       "hashes": [
         {
           "alg": "SHA-256",
-          "content": "78c8292055d1c1df0cce5d180393dc8cce0abec0a7102adb6c7b1eef6016d60a"
+          "content": "ce6e4c961d6cd6c9a86db418387425e8bdeaf05b3c8bc1411e6dca4c252f1453"
         }
       ],
       "licenses": [
@@ -986,10 +1021,10 @@
         }
       ],
       "name": "crypto-common",
-      "purl": "pkg:cargo/crypto-common@0.1.7",
+      "purl": "pkg:cargo/crypto-common@0.2.2",
       "scope": "required",
       "type": "library",
-      "version": "0.1.7"
+      "version": "0.2.2"
     },
     {
       "author": "Ted Driggs <ted.driggs@outlook.com>",
@@ -1078,7 +1113,7 @@
     },
     {
       "author": "RustCrypto Developers",
-      "bom-ref": "registry+https://github.com/rust-lang/crates.io-index#digest@0.10.7",
+      "bom-ref": "registry+https://github.com/rust-lang/crates.io-index#digest@0.11.3",
       "description": "Traits for cryptographic hash functions and message authentication codes",
       "externalReferences": [
         {
@@ -1093,7 +1128,7 @@
       "hashes": [
         {
           "alg": "SHA-256",
-          "content": "9ed9a281f7bc9b7576e61468ba615a66a5c8cfdff42420a70aa82701a3b1e292"
+          "content": "f1dd6dbb5841937940781866fa1281a1ff7bd3bf827091440879f9994983d5c2"
         }
       ],
       "licenses": [
@@ -1102,10 +1137,10 @@
         }
       ],
       "name": "digest",
-      "purl": "pkg:cargo/digest@0.10.7",
+      "purl": "pkg:cargo/digest@0.11.3",
       "scope": "required",
       "type": "library",
-      "version": "0.10.7"
+      "version": "0.11.3"
     },
     {
       "author": "David Tolnay <dtolnay@gmail.com>",
@@ -1501,37 +1536,6 @@
       "version": "0.3.32"
     },
     {
-      "author": "Bartłomiej Kamiński <fizyk20@gmail.com>, Aaron Trent <novacrazy@gmail.com>",
-      "bom-ref": "registry+https://github.com/rust-lang/crates.io-index#generic-array@0.14.7",
-      "description": "Generic types implementing functionality of arrays",
-      "externalReferences": [
-        {
-          "type": "documentation",
-          "url": "http://fizyk20.github.io/generic-array/generic_array/"
-        },
-        {
-          "type": "vcs",
-          "url": "https://github.com/fizyk20/generic-array.git"
-        }
-      ],
-      "hashes": [
-        {
-          "alg": "SHA-256",
-          "content": "85649ca51fd72272d7821adaf274ad91c288277713d9c18820d8499a7ff69e9a"
-        }
-      ],
-      "licenses": [
-        {
-          "expression": "MIT"
-        }
-      ],
-      "name": "generic-array",
-      "purl": "pkg:cargo/generic-array@0.14.7",
-      "scope": "required",
-      "type": "library",
-      "version": "0.14.7"
-    },
-    {
       "author": "Andrew Gallant <jamslam@gmail.com>",
       "bom-ref": "registry+https://github.com/rust-lang/crates.io-index#globset@0.4.18",
       "description": "Cross platform single glob and glob set matching. Glob set matching is the process of matching one or more glob patterns against a single candidate path simultaneously, and returning all of the globs that matched. ",
@@ -1622,6 +1626,37 @@
       "scope": "required",
       "type": "library",
       "version": "0.4.3"
+    },
+    {
+      "author": "RustCrypto Developers",
+      "bom-ref": "registry+https://github.com/rust-lang/crates.io-index#hybrid-array@0.4.13",
+      "description": "Hybrid typenum-based and const generic array types designed to provide the flexibility of typenum-based expressions while also allowing interoperability and a transition path to const generics ",
+      "externalReferences": [
+        {
+          "type": "documentation",
+          "url": "https://docs.rs/hybrid-array"
+        },
+        {
+          "type": "vcs",
+          "url": "https://github.com/RustCrypto/hybrid-array"
+        }
+      ],
+      "hashes": [
+        {
+          "alg": "SHA-256",
+          "content": "818356c5132c1fede50f837ca96afbe78ff42413047f4abb886217845e1b6c8c"
+        }
+      ],
+      "licenses": [
+        {
+          "expression": "MIT OR Apache-2.0"
+        }
+      ],
+      "name": "hybrid-array",
+      "purl": "pkg:cargo/hybrid-array@0.4.13",
+      "scope": "required",
+      "type": "library",
+      "version": "0.4.13"
     },
     {
       "author": "René Kijewski <crates.io@k6i.de>",
@@ -2868,7 +2903,7 @@
     },
     {
       "author": "RustCrypto Developers",
-      "bom-ref": "registry+https://github.com/rust-lang/crates.io-index#sha2@0.10.9",
+      "bom-ref": "registry+https://github.com/rust-lang/crates.io-index#sha2@0.11.0",
       "description": "Pure Rust implementation of the SHA-2 hash function family including SHA-224, SHA-256, SHA-384, and SHA-512. ",
       "externalReferences": [
         {
@@ -2883,7 +2918,7 @@
       "hashes": [
         {
           "alg": "SHA-256",
-          "content": "a7507d819769d01a365ab707794a4084392c824f54a7a6a7862f8c3d0892b283"
+          "content": "446ba717509524cb3f22f17ecc096f10f4822d76ab5c0b9822c5f9c284e825f4"
         }
       ],
       "licenses": [
@@ -2892,10 +2927,10 @@
         }
       ],
       "name": "sha2",
-      "purl": "pkg:cargo/sha2@0.10.9",
+      "purl": "pkg:cargo/sha2@0.11.0",
       "scope": "required",
       "type": "library",
-      "version": "0.10.9"
+      "version": "0.11.0"
     },
     {
       "author": "comex <comexk@gmail.com>, Fenhl <fenhl@fenhl.net>, Adrian Taylor <adetaylor@chromium.org>, Alex Touchet <alextouchet@outlook.com>, Daniel Parks <dp+git@oxidized.org>, Garrett Berg <googberg@gmail.com>",
@@ -3352,37 +3387,6 @@
       "scope": "required",
       "type": "library",
       "version": "0.2.2"
-    },
-    {
-      "author": "Sergio Benitez <sb@sergio.bz>",
-      "bom-ref": "registry+https://github.com/rust-lang/crates.io-index#version_check@0.9.5",
-      "description": "Tiny crate to check the version of the installed/running rustc.",
-      "externalReferences": [
-        {
-          "type": "documentation",
-          "url": "https://docs.rs/version_check/"
-        },
-        {
-          "type": "vcs",
-          "url": "https://github.com/SergioBenitez/version_check"
-        }
-      ],
-      "hashes": [
-        {
-          "alg": "SHA-256",
-          "content": "0b928f33d975fc6ad9f86c8f283853ad26bdd5b10b7f1542aa2fa15e2289105a"
-        }
-      ],
-      "licenses": [
-        {
-          "expression": "MIT OR Apache-2.0"
-        }
-      ],
-      "name": "version_check",
-      "purl": "pkg:cargo/version_check@0.9.5",
-      "scope": "excluded",
-      "type": "library",
-      "version": "0.9.5"
     },
     {
       "author": "Andrew Gallant <jamslam@gmail.com>",
@@ -4123,7 +4127,7 @@
         "registry+https://github.com/rust-lang/crates.io-index#ignore@0.4.28",
         "registry+https://github.com/rust-lang/crates.io-index#serde@1.0.228",
         "registry+https://github.com/rust-lang/crates.io-index#serde_json@1.0.150",
-        "registry+https://github.com/rust-lang/crates.io-index#sha2@0.10.9",
+        "registry+https://github.com/rust-lang/crates.io-index#sha2@0.11.0",
         "registry+https://github.com/rust-lang/crates.io-index#thiserror@2.0.18"
       ],
       "ref": "path+file://./crates/hanimo-core#0.1.0"
@@ -4210,9 +4214,9 @@
     },
     {
       "dependsOn": [
-        "registry+https://github.com/rust-lang/crates.io-index#generic-array@0.14.7"
+        "registry+https://github.com/rust-lang/crates.io-index#hybrid-array@0.4.13"
       ],
-      "ref": "registry+https://github.com/rust-lang/crates.io-index#block-buffer@0.10.4"
+      "ref": "registry+https://github.com/rust-lang/crates.io-index#block-buffer@0.12.1"
     },
     {
       "dependsOn": [
@@ -4311,13 +4315,16 @@
       "ref": "registry+https://github.com/rust-lang/crates.io-index#colorchoice@1.0.5"
     },
     {
+      "ref": "registry+https://github.com/rust-lang/crates.io-index#const-oid@0.10.2"
+    },
+    {
       "ref": "registry+https://github.com/rust-lang/crates.io-index#core-foundation-sys@0.8.7"
     },
     {
       "dependsOn": [
         "registry+https://github.com/rust-lang/crates.io-index#libc@0.2.186"
       ],
-      "ref": "registry+https://github.com/rust-lang/crates.io-index#cpufeatures@0.2.17"
+      "ref": "registry+https://github.com/rust-lang/crates.io-index#cpufeatures@0.3.0"
     },
     {
       "dependsOn": [
@@ -4337,10 +4344,9 @@
     },
     {
       "dependsOn": [
-        "registry+https://github.com/rust-lang/crates.io-index#generic-array@0.14.7",
-        "registry+https://github.com/rust-lang/crates.io-index#typenum@1.20.1"
+        "registry+https://github.com/rust-lang/crates.io-index#hybrid-array@0.4.13"
       ],
-      "ref": "registry+https://github.com/rust-lang/crates.io-index#crypto-common@0.1.7"
+      "ref": "registry+https://github.com/rust-lang/crates.io-index#crypto-common@0.2.2"
     },
     {
       "dependsOn": [
@@ -4369,10 +4375,11 @@
     },
     {
       "dependsOn": [
-        "registry+https://github.com/rust-lang/crates.io-index#block-buffer@0.10.4",
-        "registry+https://github.com/rust-lang/crates.io-index#crypto-common@0.1.7"
+        "registry+https://github.com/rust-lang/crates.io-index#block-buffer@0.12.1",
+        "registry+https://github.com/rust-lang/crates.io-index#const-oid@0.10.2",
+        "registry+https://github.com/rust-lang/crates.io-index#crypto-common@0.2.2"
       ],
-      "ref": "registry+https://github.com/rust-lang/crates.io-index#digest@0.10.7"
+      "ref": "registry+https://github.com/rust-lang/crates.io-index#digest@0.11.3"
     },
     {
       "ref": "registry+https://github.com/rust-lang/crates.io-index#dyn-clone@1.0.20"
@@ -4458,13 +4465,6 @@
     },
     {
       "dependsOn": [
-        "registry+https://github.com/rust-lang/crates.io-index#typenum@1.20.1",
-        "registry+https://github.com/rust-lang/crates.io-index#version_check@0.9.5"
-      ],
-      "ref": "registry+https://github.com/rust-lang/crates.io-index#generic-array@0.14.7"
-    },
-    {
-      "dependsOn": [
         "registry+https://github.com/rust-lang/crates.io-index#aho-corasick@1.1.4",
         "registry+https://github.com/rust-lang/crates.io-index#bstr@1.12.3",
         "registry+https://github.com/rust-lang/crates.io-index#log@0.4.33",
@@ -4478,6 +4478,12 @@
     },
     {
       "ref": "registry+https://github.com/rust-lang/crates.io-index#hex@0.4.3"
+    },
+    {
+      "dependsOn": [
+        "registry+https://github.com/rust-lang/crates.io-index#typenum@1.20.1"
+      ],
+      "ref": "registry+https://github.com/rust-lang/crates.io-index#hybrid-array@0.4.13"
     },
     {
       "dependsOn": [
@@ -4729,10 +4735,10 @@
     {
       "dependsOn": [
         "registry+https://github.com/rust-lang/crates.io-index#cfg-if@1.0.4",
-        "registry+https://github.com/rust-lang/crates.io-index#cpufeatures@0.2.17",
-        "registry+https://github.com/rust-lang/crates.io-index#digest@0.10.7"
+        "registry+https://github.com/rust-lang/crates.io-index#cpufeatures@0.3.0",
+        "registry+https://github.com/rust-lang/crates.io-index#digest@0.11.3"
       ],
-      "ref": "registry+https://github.com/rust-lang/crates.io-index#sha2@0.10.9"
+      "ref": "registry+https://github.com/rust-lang/crates.io-index#sha2@0.11.0"
     },
     {
       "ref": "registry+https://github.com/rust-lang/crates.io-index#shlex@2.0.1"
@@ -4821,9 +4827,6 @@
     },
     {
       "ref": "registry+https://github.com/rust-lang/crates.io-index#utf8parse@0.2.2"
-    },
-    {
-      "ref": "registry+https://github.com/rust-lang/crates.io-index#version_check@0.9.5"
     },
     {
       "dependsOn": [
