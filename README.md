@@ -81,9 +81,17 @@ hanimo find diagnose . --format md
 ```
 
 `search` and `diagnose` default to path `.` and format `json`. A search query is
-parsed into quoted phrases, uppercase identifiers, and ordinary terms. Matching
-is byte-exact: case folding, stemming, paraphrase matching, and Unicode
-normalization are not performed.
+parsed into quoted phrases, uppercase identifiers, and ordinary terms; each
+unquoted token is trimmed to its alphanumeric/`_`/`-` core, so a token made only
+of operator or punctuation bytes (for example `!=` or `->`) is dropped — quote it
+(`'"!="'`) to search for it literally. Matching is byte-exact: case folding,
+stemming, paraphrase matching, and Unicode normalization are not performed.
+
+Because matching is byte-exact, Unicode-equivalent but byte-different text does
+not match. In particular, NFC and NFD forms of the same characters — precomposed
+(완성형) versus conjoining (조합형) Hangul, or accented Latin letters — are
+different byte sequences and do not match each other. Normalize the query and the
+corpus to the same form when you need them to compare equal.
 
 Start the MCP stdio server with:
 
@@ -148,6 +156,32 @@ source open/read failure are security/I/O failures (exit 5) with no JSON report.
 | `4` | Stale or forged evidence. |
 | `5` | Scan, security, or I/O failure. |
 
+## When to use Hanimo Find, and when not
+
+Reach for Hanimo Find when a downstream consumer — a person, an audit, or an
+agent — must independently re-check evidence without trusting the search step:
+regulated or compliance contexts, agent tool-calls that cite sources, and reviews
+where a citation must resolve to exact bytes.
+
+Choose a different tool when you need interactive literal search (use ripgrep),
+semantic or paraphrase recall over a large fuzzy corpus (use an embedding or
+retrieval system), or generated answers (Hanimo Find emits evidence, not prose).
+
+| Need | Hanimo Find | ripgrep | Vector RAG |
+| --- | --- | --- | --- |
+| Byte-exact literal match | yes | yes | approximate |
+| Semantic / paraphrase recall | no | no | yes |
+| Verifiable citation contract (re-check `path:line` and bytes) | yes | no | no |
+| Independent post-hoc verification (`verify`) | yes | no | no |
+| Deterministic, reproducible output | yes | yes, per invocation | typically no |
+| Zero build, no index, always current | yes | yes | no, needs an index |
+| Offline, no model required | yes | yes | usually no |
+| Generates answers | no | no | yes |
+
+See [FAQ.md](FAQ.md) for "Why not just ripgrep?" and "Is this anti-RAG?", and
+[docs/CONSUMING_EVIDENCE.md](docs/CONSUMING_EVIDENCE.md) for how a downstream
+consumer cites and re-verifies evidence.
+
 ## Deliberate limits
 
 - v0.1 has no semantic-recall or paraphrase guarantee.
@@ -165,7 +199,19 @@ source open/read failure are security/I/O failures (exit 5) with no JSON report.
 - The project makes no production-readiness, absolute-security, or universal
   performance claim.
 
-The normative v0.1 contract is [SPEC.md](SPEC.md). Research corrections and
-transferable ideas are in [RESEARCH.md](RESEARCH.md), the decision-complete
-advancement plan is in [ROADMAP.md](ROADMAP.md), and the evaluation protocol is
-in [BENCHMARK.md](BENCHMARK.md).
+## Documentation
+
+- [SPEC.md](SPEC.md) — the normative v0.1 contract.
+- [docs/MCP.md](docs/MCP.md) — MCP client configuration and the per-tool contracts.
+- [docs/CONSUMING_EVIDENCE.md](docs/CONSUMING_EVIDENCE.md) — how a downstream
+  consumer cites and re-verifies evidence without citation theater.
+- [SECURITY.md](SECURITY.md) and [THREAT_MODEL.md](THREAT_MODEL.md) — the trust
+  boundary, invariants, and attacker-capability model.
+- [docs/VERIFYING_RELEASES.md](docs/VERIFYING_RELEASES.md) — consumer-side
+  verification of a checkout, its SBOM, and its license posture.
+- [FAQ.md](FAQ.md) — positioning questions.
+- [RESEARCH.md](RESEARCH.md) — research corrections and transferable ideas.
+- [ROADMAP.md](ROADMAP.md) — the decision-complete advancement plan.
+- [BENCHMARK.md](BENCHMARK.md) — the evaluation protocol.
+- [CONTRIBUTING.md](CONTRIBUTING.md), [CODE_OF_CONDUCT.md](CODE_OF_CONDUCT.md),
+  and [MAINTAINERS.md](MAINTAINERS.md) — participation and governance.

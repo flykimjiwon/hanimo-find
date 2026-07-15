@@ -10,7 +10,6 @@ homepage.workspace = true
 authors.workspace = true
 keywords.workspace = true
 categories.workspace = true
-documentation = "https://docs.rs/hanimo-find"
 description = "Evidence-first CLI and MCP adapter for Hanimo Find"
 publish = false
 include = [

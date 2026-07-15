@@ -8,6 +8,11 @@ release announcement.
 
 ### Fixed
 
+- Corrected the SECURITY.md reporting section to the live public-repository
+  GitHub private vulnerability reporting route, replacing the stale pre-launch
+  checklist.
+- Removed the dead `documentation` crate-metadata links; docs.rs is not built
+  for unpublished crates, and the SBOMs were regenerated accordingly.
 - Diagnosis now walks sources with the same hermetic ignore policy as search:
   global git ignore files, ancestor ignore files, and git-repository detection
   no longer change findings or the reported digest across environments, and
@@ -18,6 +23,14 @@ release announcement.
 
 ### Added
 
+- Consumer, threat-model, release-verification, and positioning guides
+  (`docs/CONSUMING_EVIDENCE.md`, `THREAT_MODEL.md`, `docs/VERIFYING_RELEASES.md`,
+  `FAQ.md`).
+- A Code of Conduct, a maintainer and bus-factor disclosure (`MAINTAINERS.md`),
+  and issue and pull-request templates.
+- A tool-selection comparison table, a "when not to use" section, and a
+  CJK/Unicode-normalization caveat in the README; an expanded contributing guide
+  with the minimum supported Rust version and DCO sign-off.
 - MCP stdio tools `verify_evidence` and `diagnose_repo` alongside
   `search_evidence`, closing the search → act → re-verify loop for MCP
   clients with the same acceptance condition as CLI exit 0.

@@ -10,7 +10,6 @@ homepage.workspace = true
 authors.workspace = true
 keywords.workspace = true
 categories.workspace = true
-documentation = "https://docs.rs/hanimo-core"
 description = "Deterministic evidence search core for Hanimo Find"
 publish = false
 include = [

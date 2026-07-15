@@ -7,10 +7,6 @@
       "description": "Deterministic evidence search core for Hanimo Find",
       "externalReferences": [
         {
-          "type": "documentation",
-          "url": "https://docs.rs/hanimo-core"
-        },
-        {
           "type": "website",
           "url": "https://github.com/flykimjiwon/hanimo-find"
         },
@@ -4996,10 +4992,6 @@
       ],
       "description": "Evidence-first CLI and MCP adapter for Hanimo Find",
       "externalReferences": [
-        {
-          "type": "documentation",
-          "url": "https://docs.rs/hanimo-find"
-        },
         {
           "type": "website",
           "url": "https://github.com/flykimjiwon/hanimo-find"

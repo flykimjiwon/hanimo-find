@@ -1,0 +1,81 @@
+name: Bug report
+description: Report incorrect or non-deterministic behavior in a released surface.
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: >-
+        Do not report suspected vulnerabilities here. Secret material, exploit
+        payloads, root-escape, symlink-traversal, stale-evidence bypass, stdout
+        protocol contamination, and secret-disclosure issues go through private
+        vulnerability reporting (see SECURITY.md), not a public issue.
+        Use synthetic fixtures in every reproduction.
+  - type: checkboxes
+    id: not-a-vulnerability
+    attributes:
+      label: This is not a security report
+      options:
+        - label: >-
+            This report contains no vulnerability, secret material, exploit
+            payload, or private source, and reproduces with synthetic fixtures.
+          required: true
+  - type: input
+    id: version
+    attributes:
+      label: Commit or version
+      description: The commit SHA or tag you built from, and the schema version if relevant.
+      placeholder: "e.g. 521911d, schema 0.1.0"
+    validations:
+      required: true
+  - type: dropdown
+    id: surface
+    attributes:
+      label: Surface
+      options:
+        - hanimo find search
+        - hanimo find verify
+        - hanimo find diagnose
+        - hanimo find mcp
+        - build / packaging / CI
+        - documentation
+    validations:
+      required: true
+  - type: textarea
+    id: reproduction
+    attributes:
+      label: Minimal reproduction
+      description: >-
+        The exact command(s) and synthetic fixture layout. Prefer a small,
+        self-contained tree.
+      render: shell
+    validations:
+      required: true
+  - type: input
+    id: expected-exit
+    attributes:
+      label: Expected exit status
+      description: "0 verified, 1 no evidence/reject, 2 usage, 3 invalid bundle, 4 stale/forged, 5 scan/security/IO."
+    validations:
+      required: true
+  - type: input
+    id: actual-exit
+    attributes:
+      label: Actual exit status
+    validations:
+      required: true
+  - type: textarea
+    id: details
+    attributes:
+      label: Expected vs actual behavior
+      description: >-
+        What the evidence, verification report, or diagnosis should have been,
+        and what it actually was. Include relevant JSON output.
+    validations:
+      required: true
+  - type: input
+    id: platform
+    attributes:
+      label: Platform and toolchain
+      placeholder: "e.g. macOS 15 arm64, rustc 1.88.0"
+    validations:
+      required: true

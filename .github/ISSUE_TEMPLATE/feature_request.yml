@@ -1,0 +1,52 @@
+name: Feature request
+description: Propose a capability, keeping the evidence boundary intact.
+labels: ["enhancement"]
+body:
+  - type: markdown
+    attributes:
+      value: >-
+        Read ROADMAP.md first. The core stays offline, deterministic, and
+        vectorless/model-free; optional model or vector lanes may propose but
+        may never silently become evidence or mutate raw sources. Proposals that
+        weaken the v0.1 evidence boundary, exit contract, or determinism are out
+        of scope.
+  - type: textarea
+    id: problem
+    attributes:
+      label: Problem
+      description: The concrete task or gap, ideally with an example query or repository shape.
+    validations:
+      required: true
+  - type: textarea
+    id: proposal
+    attributes:
+      label: Proposed behavior
+      description: What the surface would do, and the exact output or contract you expect.
+    validations:
+      required: true
+  - type: dropdown
+    id: roadmap
+    attributes:
+      label: Roadmap alignment
+      description: Which milestone does this fit? (See ROADMAP.md.)
+      options:
+        - v0.1 additive (no schema/contract change)
+        - v0.2 QueryPlan AST
+        - v0.3 Claim ledger / attestation
+        - v0.4 Evidence-Compiled Wiki
+        - v0.5 held-out evaluation
+        - v1 progressive navigation
+        - unsure
+    validations:
+      required: true
+  - type: textarea
+    id: boundary
+    attributes:
+      label: Evidence-boundary and determinism impact
+      description: >-
+        How does this preserve raw-byte authority, reproducibility, offline
+        operation, and the separation of eligibility from ranking? If it needs an
+        optional model/vector lane, say how its output stays out of evidence
+        until it passes the same verification path.
+    validations:
+      required: true
