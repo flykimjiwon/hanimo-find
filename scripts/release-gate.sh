@@ -61,6 +61,7 @@ fi
 package_assets=(
   LICENSE README.md SECURITY.md SPEC.md RESEARCH.md ROADMAP.md BENCHMARK.md
   PROVENANCE.md NAME_REVIEW.md PUBLICATION_DECISION.md
+  THREAT_MODEL.md FAQ.md docs/MCP.md docs/CONSUMING_EVIDENCE.md
   schema/evidence-bundle.schema.json
   schema/query-plan.schema.json
   schema/rag-diagnosis.schema.json
@@ -88,6 +89,8 @@ for package in hanimo-core hanimo-find; do
     grep -Fxq "${package}-${version}/${asset}" "${package_tmp}/${package}.archive.list"
   done
 done
+
+python3 scripts/check_package_links.py "${package_assets[@]}"
 
 ./scripts/generate-sboms.sh "${sbom_tmp}/generated"
 for package in hanimo-core hanimo-find; do

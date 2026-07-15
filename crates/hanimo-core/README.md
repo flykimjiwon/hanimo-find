@@ -220,11 +220,13 @@ consumer cites and re-verifies evidence.
   consumer cites and re-verifies evidence without citation theater.
 - [SECURITY.md](SECURITY.md) and [THREAT_MODEL.md](THREAT_MODEL.md) — the trust
   boundary, invariants, and attacker-capability model.
-- [docs/VERIFYING_RELEASES.md](docs/VERIFYING_RELEASES.md) — consumer-side
-  verification of a checkout, its SBOM, and its license posture.
+- [docs/VERIFYING_RELEASES.md](https://github.com/flykimjiwon/hanimo-find/blob/main/docs/VERIFYING_RELEASES.md)
+  — consumer-side verification of a checkout, its SBOM, and its license posture.
 - [FAQ.md](FAQ.md) — positioning questions.
 - [RESEARCH.md](RESEARCH.md) — research corrections and transferable ideas.
 - [ROADMAP.md](ROADMAP.md) — the decision-complete advancement plan.
 - [BENCHMARK.md](BENCHMARK.md) — the evaluation protocol.
-- [CONTRIBUTING.md](CONTRIBUTING.md), [CODE_OF_CONDUCT.md](CODE_OF_CONDUCT.md),
-  and [MAINTAINERS.md](MAINTAINERS.md) — participation and governance.
+- [CONTRIBUTING.md](https://github.com/flykimjiwon/hanimo-find/blob/main/CONTRIBUTING.md),
+  [CODE_OF_CONDUCT.md](https://github.com/flykimjiwon/hanimo-find/blob/main/CODE_OF_CONDUCT.md),
+  and [MAINTAINERS.md](https://github.com/flykimjiwon/hanimo-find/blob/main/MAINTAINERS.md)
+  — participation and governance.
