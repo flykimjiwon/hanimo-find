@@ -1,10 +1,12 @@
 # Changelog
 
-All notable changes to Hanimo Find will be documented in this file. The project
-is currently a source beta; entries under Unreleased are not a production
-release announcement.
+All notable changes to Hanimo Find will be documented in this file. This
+project is a source beta; a tagged version is a source-beta release, not a
+production announcement.
 
 ## Unreleased
+
+## 0.1.0 - 2026-07-15
 
 ### Fixed
 
