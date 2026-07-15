@@ -6,6 +6,14 @@ production announcement.
 
 ## Unreleased
 
+### Added
+
+- A runnable mini-benchmark under `bench/` comparing hanimo-find (Arm A) with a
+  ripgrep baseline (Arm D) over a sealed demonstration corpus. It measures the
+  structural moat — determinism, verified-citation rate, and forged-evidence
+  rejection — and reports span recall/precision as explicitly illustrative, with
+  the byte-exact boundary (paraphrase, NFD, case) quantified rather than hidden.
+
 ### Changed
 
 - Bumped `sha2` from 0.10.9 to 0.11.0 (with its `digest` 0.11 dependency tree).

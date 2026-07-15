@@ -1,0 +1,31 @@
+{
+  "schema": "hanimo-find-bench-probes/1",
+  "corpus_root": "bench/corpus",
+  "note": "gold is a list of [path, line] the answer must cite; expect_hit=false marks a query on the byte-exact boundary (both lexical arms are expected to miss).",
+  "probes": [
+    {"id": "P01", "class": "exact-identifier", "query": "DEPLOY_REGION", "rg_patterns": ["DEPLOY_REGION"], "expect_hit": true,
+     "gold": [["docs/deploy.md", 4], ["config/service.env", 2]]},
+    {"id": "P02", "class": "exact-identifier", "query": "FEATURE_FLAG", "rg_patterns": ["FEATURE_FLAG"], "expect_hit": true,
+     "gold": [["docs/deploy.md", 3], ["config/service.env", 1]]},
+    {"id": "P03", "class": "exact-identifier", "query": "literal_search", "rg_patterns": ["literal_search"], "expect_hit": true,
+     "gold": [["src/search.rs", 8]]},
+    {"id": "P04", "class": "exact-identifier", "query": "source_sha256", "rg_patterns": ["source_sha256"], "expect_hit": true,
+     "gold": [["src/search.rs", 5]]},
+    {"id": "P05", "class": "exact-identifier", "query": "Retriever", "rg_patterns": ["Retriever"], "expect_hit": true,
+     "gold": [["src/retriever.py", 11]]},
+    {"id": "P06", "class": "quoted-phrase", "query": "\"safe rollout\"", "rg_patterns": ["safe rollout"], "expect_hit": true,
+     "gold": [["docs/deploy.md", 3]]},
+    {"id": "P07", "class": "multilingual-exact", "query": "배포", "rg_patterns": ["배포"], "expect_hit": true,
+     "gold": [["docs/배포.md", 1], ["docs/배포.md", 3], ["docs/배포.md", 4], ["docs/배포.md", 5]]},
+    {"id": "P08", "class": "boolean-multi-term", "query": "FEATURE_FLAG DEPLOY_REGION", "rg_patterns": ["FEATURE_FLAG", "DEPLOY_REGION"], "expect_hit": true,
+     "gold": [["config/service.env", 1], ["config/service.env", 2], ["docs/deploy.md", 3], ["docs/deploy.md", 4]]},
+    {"id": "P09", "class": "paraphrase-boundary", "query": "rollback", "rg_patterns": ["rollback"], "expect_hit": false,
+     "gold": [["docs/notes.md", 3]]},
+    {"id": "P10", "class": "paraphrase-boundary", "query": "approval gate", "rg_patterns": ["approval", "gate"], "expect_hit": false,
+     "gold": [["docs/notes.md", 5]]},
+    {"id": "P11", "class": "unicode-nfd-boundary", "query_nfd_of": "배포", "expect_hit": false,
+     "gold": [["docs/배포.md", 3], ["docs/배포.md", 4], ["docs/배포.md", 5]]},
+    {"id": "P12", "class": "case-fold-boundary", "query": "deploy_region", "rg_patterns": ["deploy_region"], "expect_hit": false,
+     "gold": [["docs/deploy.md", 4], ["config/service.env", 2]]}
+  ]
+}

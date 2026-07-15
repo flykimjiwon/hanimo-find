@@ -1,0 +1,34 @@
+{
+  "schema": "hanimo-find-bench-manifest/1",
+  "sealed_at_commit": "2655912c64d8c4c82369cf8a24056a83f225509a",
+  "corpus": {
+    "root": "bench/corpus",
+    "files": 6,
+    "sha256": "5562034bd71bef7ed166295b38e85c248d1f938f4666a16c88dbe90338da7e1b",
+    "note": "Small sealed demonstration corpus (English + Korean docs, config, Rust, Python)."
+  },
+  "executable": {
+    "binary": "hanimo",
+    "built_from": "2655912c64d8c4c82369cf8a24056a83f225509a",
+    "profile": "release",
+    "msrv": "1.88.0"
+  },
+  "arms": {
+    "A": {"status": "run", "desc": "hanimo-find v0.1 exact-literal EvidenceBundle search"},
+    "D": {"status": "run", "desc": "ripgrep 15.2.0 frozen invocation `rg -n --no-heading -F -e <term> .` with a line-to-span adapter"},
+    "B": {"status": "not_run", "desc": "v0.2 QueryPlan AST (unimplemented)"},
+    "C": {"status": "not_run", "desc": "verified Claim ledger + Evidence-Compiled Wiki (unimplemented)"},
+    "hanimo-rag": {"status": "not_run", "desc": "requires the external hanimo-rag repository and an LLM"},
+    "naive-RAG": {"status": "not_run", "desc": "requires embeddings and an LLM"}
+  },
+  "metrics": [
+    "span_recall",
+    "span_precision",
+    "verified_citation_rate",
+    "determinism_distinct_digests",
+    "forged_acceptance_rate"
+  ],
+  "probe_set": "bench/probes.json",
+  "primary_result": "structural properties (determinism, verified citation, forgery rejection)",
+  "note": "Structural metrics are the headline and hold regardless of corpus size. Span metrics are illustrative on this small corpus and are NOT a superiority claim. See ../BENCHMARK.md for the preregistration a generalizable study requires."
+}

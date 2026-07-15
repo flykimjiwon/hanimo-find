@@ -4,6 +4,14 @@ This protocol measures Hanimo Find and the planned Evidence-Compiled Wiki
 against original source spans. It prevents a compiled artifact from grading
 itself and separates quality from build, query, update, and verification cost.
 
+A small, runnable demonstration of the arms that need no external code or LLM
+(hanimo-find vs a ripgrep baseline) lives in
+[`bench/`](https://github.com/flykimjiwon/hanimo-find/tree/main/bench). Its
+structural results — determinism, verified citations, and forged-evidence
+rejection — are real and corpus-independent; its span numbers are explicitly
+illustrative, not a superiority claim. This protocol is what a generalizable
+study, including the `hanimo-rag`, naive-RAG, and v0.2/v0.3 arms, must follow.
+
 ## Preregistration unit
 
 Before running an experiment, seal a manifest containing:
